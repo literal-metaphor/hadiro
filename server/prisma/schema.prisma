@@ -1,0 +1,22 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    // url = env("DATABASE_URL")
+    url = "file:../local.db"
+}
+
+model users {
+    id          String @id
+    email       String @unique
+    username    String
+    password    String
+    level       Int
+}
+
+// TODO:
+// model students
+// model descriptors
+// model attendances

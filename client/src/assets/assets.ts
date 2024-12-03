@@ -12,6 +12,11 @@ import defaultprofile from './defaultprofile.svg';
 import logout from './logout.svg';
 import search from './search.svg';
 import notification from './notification.svg';
+import backward from './backward.svg';
+import forward from './forward.svg';
+import destroy from './delete.svg';
+import edit from './edit.svg';
+import filter from './filter.svg';
 
 const assets = {
   hadiro,
@@ -28,6 +33,11 @@ const assets = {
   logout,
   search,
   notification,
+  backward,
+  forward,
+  destroy,
+  edit,
+  filter,
 };
 
 export default assets;

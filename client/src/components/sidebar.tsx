@@ -14,6 +14,7 @@ function Sidebar({ active }: SidebarProps) {
   ];
   const handleLogout = () => {
     localStorage.removeItem('email');
+    localStorage.removeItem('username');
     window.location.href = '/';
   };
   const toggleSidebar = () => {
@@ -23,7 +24,7 @@ function Sidebar({ active }: SidebarProps) {
     <>
       <button
         onClick={toggleSidebar}
-        className="fixed top-5 left-5 z-40 p-2 bg-[#1A73E8] text-white rounded-full sm:hidden"
+        className="fixed top-[18px] left-[17px] z-40 p-2 bg-[#1A73E8] text-white rounded-lg sm:hidden"
       >
         ☰
       </button>
@@ -58,7 +59,7 @@ function Sidebar({ active }: SidebarProps) {
           <a href="" className='text-black hover:text-black w-3/4'>
             <div className='flex items-center'>
               <img src={assets.defaultprofile} className='mr-3' />
-              <span className='truncate max-w-full'>Emmanuel Jason</span>
+              <span className='truncate max-w-full'>{localStorage.getItem('username')}</span>
             </div>
           </a>
           <div className='ml-3 ms-auto'>

@@ -31,22 +31,23 @@ function Login() {
     }
     if (valid) {
       localStorage.setItem('email', email);
+      localStorage.setItem('username', "Revo");//this will be important later
       window.location.href = '/beranda';
     }
   }
   return (
     <>
       <div className='flex items-center justify-center h-screen'>
-        <div className='w-full mx-5 sm:w-3/4 md:w-1/2 flex flex-col justify-center text-center bg-white border border-[#C5C5C5] rounded-xl p-8 pt-0'>
+        <div className='w-full mx-5 sm:w-3/4 md:w-1/2 flex flex-col justify-center text-center bg-white border border-[#C5C5C5] rounded-lg p-8 pt-0'>
           <img src={assets.hadiro} className='w-1/2 self-center' />
           <p className='text-[1.5rem] sm:text-[2rem] mb-5 font-bold'>Admin Login</p>
           <p className='text-[1rem] sm:text-[1.5rem] mb-5 opacity-50'>Ojo Bolos, Hadiro Wae Rek!</p>
           <form onSubmit={handleSubmit}>
-            <div className='border border-[2px] border-[#E5E5E5] rounded-xl p-4 flex items-center mb-5'>
+            <div className='border border-[2px] border-[#E5E5E5] rounded-lg p-4 flex items-center mb-5'>
               <img src={assets.email} className='mr-3' />
               <input type="text" placeholder='Email' className='w-full border-none outline-none' onChange={(e) => setEmail(e.target.value)} />
             </div>
-            <div className='border border-[2px] border-[#E5E5E5] rounded-xl p-4 flex items-center mb-5'>
+            <div className='border border-[2px] border-[#E5E5E5] rounded-lg p-4 flex items-center mb-5'>
               <img src={assets.password} className='mr-3' />
               <input type={passwordVisible ? 'text' : 'password'} placeholder='Sandi' className='w-full border-none outline-none' onChange={(e) => setPassword(e.target.value)} />
               <img src={passwordVisible ? assets.show : assets.hide} className='ml-3' onClick={togglePasswordVisibility} />
@@ -56,7 +57,7 @@ function Login() {
             </div>
             <button type='submit' className='bg-[#1A73E8] text-white w-full shadow-md shadow-gray-500 focus:outline-none'>Login</button>
           </form>
-          {errors && <div className="bg-[#FF2400] text-white mt-5 rounded-xl p-4 flex items-center justify-center">
+          {errors && <div className="bg-[#FF2400] text-white mt-5 rounded-lg p-4 flex items-center justify-center">
             <img src={assets.error} className='mr-3 font-medium' /> {errors}
           </div>}
         </div>

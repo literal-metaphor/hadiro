@@ -10,9 +10,11 @@ function Siswa() {
         <div className="sm:w-1/2 md:w-1/3 lg:w-1/4 h-full">
           <Sidebar active="Siswa" />
         </div>
-        <div className="w-full pt-20">
+        <div className="w-full pt-[78px]">
           <Topbar />
-          <h1>SISWA</h1>
+          <div className="p-12">
+            <h1>SISWA</h1>
+          </div>
         </div>
       </div>
     </>

@@ -41,7 +41,7 @@ function Topbar() {
     <>
       <div className="border border-[#C5C5C5] bg-white p-4 flex justify-between items-center w-full sm:w-2/3 md:w-3/4 lg:w-4/5 z-10 fixed top-0">
         <div className="flex items-center w-1/2 lg:w-1/3 relative">
-          <div className="border border-[2px] border-[#E5E5E5] rounded-lg p-2 flex items-center w-full">
+          <div className="border border-[2px] border-[#E5E5E5] rounded-lg p-2 flex items-center w-full ml-12 sm:ml-0">
             <img src={assets.search} className="mr-3 w-6" />
             <input
               type="text"

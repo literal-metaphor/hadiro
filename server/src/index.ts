@@ -5,21 +5,18 @@ import cors from "cors";
 import helmet from "helmet";
 import reqHandler from "./utils/reqHandler.js";
 
-// Core functionalities
-
 // Configure app to work with .env
 dotenv.config();
 
 // Setup Express app with CORS and basic request processing with urlencoded form data and JSON, and append protective headers with Helmet.js
 const app = express();
-const corsOptions: cors.CorsOptions = {
+app.use(cors({
   origin: "http://localhost", // Only allow this specific domain
   methods: "GET, POST, PUT, DELETE", // Allow only these methods
   allowedHeaders: "Content-Type, Authorization", // Allow only these headers
   credentials: true, // Allow cookies/auth headers
   maxAge: 86400, // Cache the preflight response for 24 hours (optional)
-};
-app.use(cors(corsOptions));
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());

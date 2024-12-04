@@ -33,6 +33,29 @@ export default async function reqHandler(req: Request, res: Response, action: Al
     }
 }
 
+// Use this for testing
+export async function mockReqHandler(data: any, action: AllowedActions) {
+    try {
+        // Validate input according to schema
+        const schema = await import(`./schemas/${action}.js`);
+        let validation = schema.default().validate(data);
+        if (validation.error)
+            throw new HttpError(422, validation.error.message);
+
+        // Prevent XSS for all strings in the body
+        tranverseBody(validation.value, (str) => xss(str));
+        
+        // Call the API function
+        const func = await import(`../functions/${action}.js`);
+        const result = await func.default(validation.value);
+
+        // Return the result
+        return result;
+    } catch (e) {
+        throw e;
+    }
+}
+
 function tranverseBody(obj: any, func: (str: string) => string) {
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) {

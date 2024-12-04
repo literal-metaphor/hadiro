@@ -3,7 +3,7 @@ import { compareSync } from "bcrypt";
 import HttpError from "../../types/HttpError.js";
 import { randomBytes } from "crypto";
 
-export default async function login(data: { email: string, password: string }): Promise<{ message: string; link: string; }> {
+export default async function login(data: { email: string, password: string }) {
     let { email, password } = data;
 
     let user = await userPrisma.findUnique({
@@ -17,8 +17,8 @@ export default async function login(data: { email: string, password: string }): 
         throw new HttpError(401, "Password salah.");
 
     // TODO:
-    // Implement automated email at the last, we don't need this for now
-    // Use "link" in response instead for OTP testing
+    // Implement automated email, but do it later, we don't need this complexity for now
+    // Use "otp" in response instead for OTP testing
 
     // Generate OTP
     const otp = randomBytes(32).toString("hex");
@@ -33,6 +33,6 @@ export default async function login(data: { email: string, password: string }): 
 
     return {
         message: "Login sukses! Mohon periksa email Anda.",
-        link: `http://localhost:${process.env.PORT || 3000}/api/v1/users/auth/otp?otp=${otp}`
+        otp
     }
 }

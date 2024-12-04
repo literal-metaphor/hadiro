@@ -17,7 +17,6 @@ class LoginTest {
         console.log(chalk.green("All tests passed!"))
     }
 
-    // * Valid login:
     public async happyPath(email: string, password: string) {
         try {
             const res = await mockReqHandler({
@@ -29,12 +28,11 @@ class LoginTest {
                 message: expect.any(String),
                 otp: expect.any(String)
             });
-    
-            if (!await userPrisma.findUnique({
-                where: {
-                    otp: res.otp
-                }
-            })) throw new Error("OTP is invalid!");
+
+            await mockReqHandler({
+                email,
+                otp: res.otp
+            }, "auth/otp");
     
             console.log(chalk.green(`[HAPPY PATH Login] success: \n${JSON.stringify(res)}\n`));
         } catch (err) {

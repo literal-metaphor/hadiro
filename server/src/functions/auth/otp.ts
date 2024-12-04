@@ -1,17 +1,22 @@
 import jwt from "jsonwebtoken";
 import { userPrisma } from "../../../prisma/clients.js";
 import HttpError from "../../types/HttpError.js";
+import { compareSync } from "bcrypt";
 
-export default async function otp(data: { otp: string, }) {
-    const { otp  } = data;
+export default async function otp(data: { email: string, otp: string, }) {
+    const { email, otp } = data;
 
     const user = await userPrisma.findUnique({
         where: {
-            otp
+            email
         }
     });
     if (!user)
-        throw new HttpError(401, "Kode OTP tidak valid.");
+        throw new HttpError(401, "Email tidak terdaftar.");
+
+    // Confirm OTP
+    if (!user.otp || !compareSync(otp, user.otp))
+        throw new HttpError(401, "OTP tidak valid.");
 
     // Sign a JWT
     if (!process.env.JWT_SECRET)

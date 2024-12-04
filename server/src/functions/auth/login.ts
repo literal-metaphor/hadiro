@@ -1,5 +1,5 @@
 import { userPrisma } from "../../../prisma/clients.js";
-import { compareSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
 import HttpError from "../../types/HttpError.js";
 import { randomBytes } from "crypto";
 
@@ -27,7 +27,7 @@ export default async function login(data: { email: string, password: string }) {
             id: user.id
         },
         data: {
-            otp
+            otp: hashSync(otp, 12)
         }
     });
 

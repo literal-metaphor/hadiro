@@ -1,14 +1,11 @@
 import { userPrisma } from "../../../prisma/clients.js";
 import { compareSync } from "bcrypt";
 import HttpError from "../../types/HttpError.js";
-import xss from "xss";
+import { randomBytes } from "crypto";
 
-export default async function login(body: { email: string, password: string }): Promise<{ message: string; }> {
-    let { email, password } = body;
-    email = xss(email);
-    password = xss(password);
+export default async function login(data: { email: string, password: string }): Promise<{ message: string; link: string; }> {
+    let { email, password } = data;
 
-    // Check user existence and password
     let user = await userPrisma.findUnique({
         where: {
             email
@@ -19,9 +16,23 @@ export default async function login(body: { email: string, password: string }): 
     if (!compareSync(password, user.password))
         throw new HttpError(401, "Password salah.");
 
-    // TODO: OTP
+    // TODO:
+    // Implement automated email at the last, we don't need this for now
+    // Use "link" in response instead for OTP testing
+
+    // Generate OTP
+    const otp = randomBytes(32).toString("hex");
+    await userPrisma.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            otp
+        }
+    });
 
     return {
-        message: "Login sukses! Mohon periksa email Anda."
+        message: "Login sukses! Mohon periksa email Anda.",
+        link: `http://localhost:${process.env.PORT || 3000}/api/v1/users/auth/otp?otp=${otp}`
     }
 }

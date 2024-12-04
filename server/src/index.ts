@@ -31,6 +31,9 @@ app.use("/api/v1/users", v1UserRouter);
 v1UserRouter.post("/auth/login", async (req, res) => {
   await reqHandler(req, res, "auth/login");
 });
+v1UserRouter.post("/auth/otp", async (req, res) => {
+  await reqHandler(req, res, "auth/otp");
+});
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

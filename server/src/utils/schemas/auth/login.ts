@@ -9,7 +9,7 @@ export default function schema() {
                 'string.base': `Email harus dalam bentuk string.`,
                 'string.empty': `Email tidak boleh kosong.`,
                 'string.email': `Email tidak valid.`,
-                'any.required': `Email tidak boleh kosong.`
+                'any.required': `Email harus diisi.`
             }),
     
         password: Joi.string()
@@ -19,7 +19,7 @@ export default function schema() {
                 'string.base': `Password harus dalam bentuk string.`,
                 'string.empty': `Password tidak boleh kosong.`,
                 'string.pattern.base': `Password tidak sesuai dengan pola.`, // 8 to 24 chars, at least one uppercase, lowercase, and number
-                'any.required': `Password tidak boleh kosong.`
+                'any.required': `Password harus diisi.`
             }),
     });
 }

@@ -13,6 +13,7 @@ model users {
     email       String @unique
     username    String
     password    String
+    otp         String? @unique
     level       Int
 }
 

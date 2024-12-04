@@ -4,6 +4,7 @@ import xss from "xss";
 
 const ALLOWED_ACTIONS = [
     "auth/login",
+    "auth/otp",
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 
@@ -11,7 +12,7 @@ export default async function reqHandler(req: Request, res: Response, action: Al
     try {
         // Validate input according to schema
         const schema = await import(`./schemas/${action}.js`);
-        let validation = schema.default().validate(req.body);
+        let validation = schema.default().validate({...req.body, ...req.params, ...req.query});
         if (validation.error)
             throw new HttpError(422, validation.error.message);
 

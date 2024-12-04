@@ -3,6 +3,5 @@
 <br> 
 
 <p>
-  Hadiro merupakan website absensi yang dikhususkan <br>
-  bagi siswa-siswi SMKN 4 Malang untuk memudahkan dalam perekapan data siswa bagi tim kesiswaan. <br> 
+  Hadiro is the eclusive absence website of all Student's in Public Vocation High School 4 Malang. <br>
 </p>

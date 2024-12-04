@@ -1,3 +1,5 @@
 # Hadiro 
 
-<img src="hadiro.png">
+<img src="client/public/hadiro.png"> 
+
+<br> 

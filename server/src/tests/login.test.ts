@@ -1,10 +1,9 @@
 import { expect } from "expect"
-import login from "../functions/auth/login.js";
 import { userPrisma } from "../../prisma/clients.js";
 import chalk from "chalk";
 import { mockReqHandler } from "../utils/reqHandler.js";
 
-// * NOTE: Please seed the database first for the mock data to be ready. ``/prisma/seed.ts``
+// * NOTE: Please seed the database first for the mock data to be ready. ``prisma/seed.ts``
 
 class LoginTest {
     public async run() {

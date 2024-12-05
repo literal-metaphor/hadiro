@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import assets from '../assets/assets.ts';
-import Sidebar from "../components/sidebar"
-import Topbar from "../components/topbar"
+import assets from '../../assets/assets.ts';
+import Sidebar from "../../components/sidebar.tsx"
+import Topbar from "../../components/topbar.tsx"
 
-function Riwayat() {
+function Siswa() {
   const [search, setSearch] = useState('');
   const [data] = useState([
-    { id: 1, name: 'John Doe', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'A', status: 'Hadir' },
-    { id: 2, name: 'Jane Smith', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'B', status: 'Izin' },
-    { id: 3, name: 'Emily Johnson', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'TG', kode: 'C', status: 'Dispen' },
-    { id: 4, name: 'Michael Brown', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'D', status: 'Hadir' },
-    { id: 5, name: 'Chris Green', profile: assets.defaultprofile, kelas: 'X', jurusan: 'MEKA', kode: 'E', status: 'TK' },
-    { id: 6, name: 'Laura White', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'TKJ', kode: 'F', status: 'Hadir' },
-    { id: 7, name: 'Tom Black', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'RPL', kode: 'G', status: 'Sakit' },
-    { id: 8, name: 'Nina Grey', profile: assets.defaultprofile, kelas: 'X', jurusan: 'PH', kode: 'H', status: 'Hadir' },
-    { id: 9, name: 'Steve Red', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'I', status: 'Hadir' },
-    { id: 10, name: 'Lily Blue', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'MEKA', kode: 'J', status: 'Hadir' },
-    { id: 11, name: 'Harry Pink', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'K', status: 'Hadir' },
+    { id: 1, name: 'John Doe', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'A' },
+    { id: 2, name: 'Jane Smith', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'B' },
+    { id: 3, name: 'Emily Johnson', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'TG', kode: 'C' },
+    { id: 4, name: 'Michael Brown', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'D' },
+    { id: 5, name: 'Chris Green', profile: assets.defaultprofile, kelas: 'X', jurusan: 'MEKA', kode: 'E' },
+    { id: 6, name: 'Laura White', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'TKJ', kode: 'F' },
+    { id: 7, name: 'Tom Black', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'RPL', kode: 'G' },
+    { id: 8, name: 'Nina Grey', profile: assets.defaultprofile, kelas: 'X', jurusan: 'PH', kode: 'H' },
+    { id: 9, name: 'Steve Red', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'I' },
+    { id: 10, name: 'Lily Blue', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'MEKA', kode: 'J' },
+    { id: 11, name: 'Harry Pink', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'K' },
   ]);
   const [filteredResults, setFilteredResults] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,16 +25,14 @@ function Riwayat() {
   const [kelas, setKelas] = useState('');
   const [jurusan, setJurusan] = useState('');
   const [kode, setKode] = useState('');
-  const [status, setStatus] = useState('');
   const handleSearch = (value: string) => {
     setSearch(value);
     const filteredData = data.filter((item) => {
       const matchesSearch = item.name.toLowerCase().includes(value.toLowerCase());
-      const matchesKelas = kelas ? item.kelas == kelas : true;
-      const matchesJurusan = jurusan ? item.jurusan == jurusan : true;
-      const matchesKode = kode ? item.kode == kode.toUpperCase() : true;
-      const matchesStatus = status ? item.status == status : true;
-      return matchesSearch && matchesKelas && matchesJurusan && matchesKode && matchesStatus;
+      const matchesKelas = kelas ? item.kelas === kelas : true;
+      const matchesJurusan = jurusan ? item.jurusan === jurusan : true;
+      const matchesKode = kode ? item.kode === kode.toUpperCase() : true;
+      return matchesSearch && matchesKelas && matchesJurusan && matchesKode;
     });
     setFilteredResults(filteredData);
     setCurrentPage(1);
@@ -45,14 +43,13 @@ function Riwayat() {
       const matchesKelas = kelas ? student.kelas == kelas : true;
       const matchesJurusan = jurusan ? student.jurusan == jurusan : true;
       const matchesKode = kode ? student.kode == kode.toUpperCase() : true;
-      const matchesStatus = status ? student.status == status : true;
-      return matchesSearch && matchesKelas && matchesJurusan && matchesKode && matchesStatus;
+      return matchesSearch && matchesKelas && matchesJurusan && matchesKode;
     });
     setFilteredResults(filteredData);
     setCurrentPage(1);
     setFilterModalOpen(false);
   };
-  const displayedStudents = search.trim() || kelas || jurusan || kode || status
+  const displayedStudents = search.trim() || kelas || jurusan || kode
     ? filteredResults.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     : data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const toggleFilterModal = () => {
@@ -74,14 +71,14 @@ function Riwayat() {
   const endItem = totalItems > 0 ? Math.min(currentPage * itemsPerPage, totalItems) : 0;
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex">
         <div className="sm:w-1/2 md:w-1/3 lg:w-1/4 h-full">
-          <Sidebar active="Riwayat" />
+          <Sidebar active="Siswa" />
         </div>
         <div className="w-full pt-[78px]">
           <Topbar />
           <div className="p-12">
-            <h1 className="text-3xl font-bold">Riwayat Absensi</h1>
+            <h1 className="text-3xl font-bold">Daftar Siswa</h1>
             <div className="bg-white border border-[#C5C5C5] p-5 rounded-lg mt-5">
               <div className="flex">
                 <img src={assets.filter} className='mr-3 hover:cursor-pointer' onClick={toggleFilterModal} />
@@ -110,7 +107,9 @@ function Riwayat() {
                   <tr>
                     <th className="py-2 px-4 border-b text-left">No.</th>
                     <th className="py-2 px-4 border-b text-left">Nama</th>
-                    <th className="py-2 px-4 border-b text-left w-1/5">Kehadiran Hari Ini</th>
+                    {localStorage.getItem('level') == "3" ?
+                      <th className="py-2 px-4 border-b text-left w-1/5">Aksi</th>
+                    : "" }
                   </tr>
                 </thead>
                 <tbody>
@@ -127,40 +126,19 @@ function Riwayat() {
                           <span className='opacity-50 text-sm'>{student.kelas} {student.jurusan} {student.kode}</span>
                         </div>
                       </td>
-                      <td className="py-2 px-4 border-b">
-                        {!student.status && (
-                          <>
-                            <button className='bg-white hover:bg-white focus:outline-none rounded text-black border border-[#C5C5C5] py-1 w-full'>
-                              ?
-                            </button>
-                          </>
-                        )}
-                        {student.status == 'Hadir' && (
-                          <button className='bg-[#34A853] hover:bg-[#34A853] focus:outline-none rounded text-white py-1 w-full'>
-                            Hadir
-                          </button>
-                        )}
-                        {student.status == 'Izin' && (
-                          <button className='bg-[#B52FD7] hover:bg-[#B52FD7] focus:outline-none rounded text-white py-1 w-full'>
-                            Izin
-                          </button>
-                        )}
-                        {student.status == 'Dispen' && (
-                          <button className='bg-[#FFB200] hover:bg-[#FFB200] focus:outline-none rounded text-white py-1 w-full'>
-                            Dispen
-                          </button>
-                        )}
-                        {student.status == 'TK' && (
-                          <button className='bg-[#A83436] hover:bg-[#A83436] focus:outline-none rounded text-white py-1 w-full'>
-                            TK
-                          </button>
-                        )}
-                        {student.status == 'Sakit' && (
-                          <button className='bg-[#6B8CB6] hover:bg-[#6B8CB6] focus:outline-none rounded text-white py-1 w-full'>
-                            Sakit
-                          </button>
-                        )}
-                      </td>
+                      {localStorage.getItem('level') == "3" ?
+                        <td className="py-2 px-4 border-b">
+                          <div className="inline-flex items-center">
+                            <img
+                              src={assets.edit}
+                              className="mr-5"
+                            />
+                            <img
+                              src={assets.destroy}
+                            />
+                          </div>
+                        </td>
+                      : "" }
                     </tr>
                   ))}
                 </tbody>
@@ -205,7 +183,7 @@ function Riwayat() {
                   <option value="PH">PH</option>
                 </select>
               </div>
-              <div className="mb-4 flex items-center">
+              <div className="mb-8 flex items-center">
                 <label className="block mr-4 w-24">Kode:</label>
                 <input
                   type="text"
@@ -214,21 +192,6 @@ function Riwayat() {
                   value={kode}
                   onChange={(e) => setKode(e.target.value)}
                 />
-              </div>
-              <div className="mb-8 flex items-center">
-                <label className="block mr-4 w-24">Status:</label>
-                <select
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  <option value="">Semua</option>
-                  <option value="Hadir">Hadir</option>
-                  <option value="Sakit">Sakit</option>
-                  <option value="Izin">Izin</option>
-                  <option value="Dispen">Dispen</option>
-                  <option value="TK">TK</option>
-                </select>
               </div>
               <div className="flex">
                 <button
@@ -252,4 +215,4 @@ function Riwayat() {
   )
 }
 
-export default Riwayat
+export default Siswa

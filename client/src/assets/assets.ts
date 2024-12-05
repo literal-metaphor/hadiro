@@ -17,6 +17,12 @@ import forward from './forward.svg';
 import destroy from './delete.svg';
 import edit from './edit.svg';
 import filter from './filter.svg';
+import absen from './absen.svg';
+import surat from './surat.svg';
+import jurnal from './jurnal.svg';
+import pelanggaran from './pelanggaran.svg';
+import bukuuser from './bukuuser.svg';
+import arrow from './arrow.svg';
 
 const assets = {
   hadiro,
@@ -38,6 +44,12 @@ const assets = {
   destroy,
   edit,
   filter,
+  absen,
+  surat,
+  jurnal,
+  pelanggaran,
+  bukuuser,
+  arrow
 };
 
 export default assets;

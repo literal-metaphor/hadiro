@@ -6,15 +6,28 @@ interface SidebarProps {
 }
 function Sidebar({ active }: SidebarProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const navItems = [
-    { name: 'Beranda', href: '/beranda', icon: assets.beranda },
-    { name: 'Siswa', href: '/siswa', icon: assets.siswa },
-    { name: 'Riwayat', href: '/riwayat', icon: assets.riwayat },
-    { name: 'Buku Tamu', href: '/buku', icon: assets.buku },
-  ];
+  const level = localStorage.getItem('level');//for user/admin
+  let navItems = [];
+  if(level) {
+    navItems = [//admin
+      { name: 'Beranda', href: '/beranda', icon: assets.beranda },
+      { name: 'Siswa', href: '/siswa', icon: assets.siswa },
+      { name: 'Riwayat', href: '/riwayat', icon: assets.riwayat },
+      { name: 'Buku Tamu', href: '/buku', icon: assets.buku },
+    ];
+  } else {
+    navItems = [//user
+      { name: 'Absen Sekarang', href: '/absen', icon: assets.absen },
+      { name: 'Surat Izin', href: '/surat', icon: assets.surat },
+      { name: 'Jurnal Kelas', href: '/jurnal', icon: assets.jurnal },
+      { name: 'Pelanggaran', href: '/pelanggaran', icon: assets.pelanggaran },
+      { name: 'Buku Tamu', href: '/bukuuser', icon: assets.bukuuser },
+    ];
+  }
   const handleLogout = () => {
     localStorage.removeItem('email');
     localStorage.removeItem('username');
+    localStorage.removeItem('level');
     window.location.href = '/';
   };
   const toggleSidebar = () => {
@@ -24,11 +37,11 @@ function Sidebar({ active }: SidebarProps) {
     <>
       <button
         onClick={toggleSidebar}
-        className="fixed top-[18px] left-[17px] z-40 p-2 bg-[#1A73E8] text-white rounded-lg sm:hidden"
+        className="fixed top-[18px] left-[17px] z-50 p-2 bg-[#1A73E8] text-white rounded-lg sm:hidden"
       >
         ☰
       </button>
-      <div className={`fixed left-0 top-0 h-full w-2/3 sm:w-1/3 md:w-1/4 lg:w-1/5 bg-white border border-[#C5C5C5] z-30 transition-transform duration-300 ${
+      <div className={`fixed left-0 top-0 h-full w-2/3 sm:w-1/3 md:w-1/4 lg:w-1/5 bg-white border border-[#C5C5C5] z-40 transition-transform duration-300 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } flex flex-col`}>
         <img src={assets.hadiro} />
@@ -59,17 +72,19 @@ function Sidebar({ active }: SidebarProps) {
           <a href="" className='text-black hover:text-black w-3/4'>
             <div className='flex items-center'>
               <img src={assets.defaultprofile} className='mr-3' />
-              <span className='truncate max-w-full'>{localStorage.getItem('username')}</span>
+              <span className='truncate max-w-full'>{localStorage.getItem('username') || "Siswa"}</span>
             </div>
           </a>
-          <div className='ml-3 ms-auto'>
-            <img src={assets.logout} className='min-w-6 w-6 hover:cursor-pointer' onClick={handleLogout} />
-          </div>
+          {localStorage.getItem('username') && (
+            <div className='ml-3 ms-auto'>
+              <img src={assets.logout} className='min-w-6 w-6 hover:cursor-pointer' onClick={handleLogout} />
+            </div>
+          )}
         </div>
       </div>
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 sm:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 sm:hidden"
           onClick={toggleSidebar}
         ></div>
       )}

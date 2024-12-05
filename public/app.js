@@ -160,14 +160,9 @@ async function detectRealTime(video, faceCanvas, instructionCanvas) {
         ctx.lineWidth = 4;
         ctx.strokeRect(left, top, width, height);
 
-        // Draw additional data details
-        ctx.fillStyle = 'cyan';
-        ctx.font = '16px Arial';
-
         if (!initialDescriptor) {
             initialDescriptor = detection.descriptor;
         } else {
-            const currentDescriptor = detection.descriptor;
             const distance = faceapi.euclideanDistance(initialDescriptor, currentDescriptor);
 
             if (distance > 0.6) {
@@ -184,15 +179,11 @@ async function detectRealTime(video, faceCanvas, instructionCanvas) {
                         challengeDone = true;
                         console.log("Challenge done!");
                         drawInstructions("Wajah siap untuk difoto");
-                        //findClosestMatches(detection.descriptor);
                         canTakePhoto = true;
-                        //findBestMatch(detection.descriptor, ctx, left, top);
                     }
                 } else {
-                    // send descriptor to server for matching
-                    //findClosestMatches(detection.descriptor);
+                    drawInstructions("Wajah siap untuk difoto");
                     canTakePhoto = true;
-                    //findBestMatch(detection.descriptor, ctx, left, top);
                 }
             }
         }
@@ -230,25 +221,6 @@ if (!labeledDescriptors.length) {
 }
 
 async function findClosestMatches(descriptor) {
-    /*fetch('/api/find-best-match', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ descriptor }),
-    })
-        .then(async (response) => {
-            if (response.ok) {
-                const matches = await response.json();
-                console.log('Top Matches:', matches);
-                return matches;
-            } else {
-                console.error('Error:', await response.text());
-                return [];
-            }
-        })
-        .catch((error) => {
-            console.error('Fetch error:', error);
-            return [];
-        });*/
     try {
         const response = await fetch('/api/find-best-match', {
             method: 'POST',
@@ -268,19 +240,3 @@ async function findClosestMatches(descriptor) {
         return [];
     }
 }
-
-/*async function findBestMatch(descriptor, ctx, left, top) {
-
-    if (!labeledDescriptors.length) {
-        console.error('No labeled descriptors found in the folder.');
-        return;
-    }
-
-    // Create FaceMatcher with the loaded descriptors
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
-
-    // Find the best match for the given detection
-    const bestMatch = faceMatcher.findBestMatch(descriptor);
-    console.log(bestMatch);
-    ctx.fillText(bestMatch.label, left, top - 60);
-}*/

@@ -1,5 +1,4 @@
 import { expect } from "expect"
-import { userPrisma } from "../../prisma/clients.js";
 import chalk from "chalk";
 import { mockReqHandler } from "../utils/reqHandler.js";
 

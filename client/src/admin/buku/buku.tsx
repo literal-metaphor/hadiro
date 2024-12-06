@@ -122,7 +122,7 @@ function Buku() {
                           <div className='flex'>
                             <img
                               src={user.profile}
-                              className="mr-3"
+                              className="mr-3 w-8 rounded-full"
                             />
                             <span className='font-bold'>{user.name}</span>
                           </div>

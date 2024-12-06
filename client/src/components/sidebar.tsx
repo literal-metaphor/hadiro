@@ -46,7 +46,7 @@ function Sidebar({ active }: SidebarProps) {
       } flex flex-col`}>
         <img src={assets.hadiro} />
         <ul className="mt-5 space-y-4 px-5">
-        {navItems.map((item) => (
+          {navItems.map((item) => (
             <li key={item.name}>
               <a
                 href={item.href}
@@ -69,10 +69,10 @@ function Sidebar({ active }: SidebarProps) {
           ))}
         </ul>
         <div className='border border-[#C5C5C5] rounded-lg m-5 p-5 flex items-center mt-auto'>
-          <a href="" className='text-black hover:text-black w-3/4'>
+          <a href="#" className='text-black hover:text-black w-3/4'>
             <div className='flex items-center'>
-              <img src={assets.defaultprofile} className='mr-3' />
-              <span className='truncate max-w-full'>{localStorage.getItem('username') || "Siswa"}</span>
+              <img src={localStorage.getItem('username') ? assets.defaultprofile : assets.smkn4} className={`mr-3 w-6 ${localStorage.getItem('username') ? 'rounded-full' : ''}`} />
+              <span className={`max-w-full ${localStorage.getItem('username') ? 'truncate' : ''}`}>{localStorage.getItem('username') || "SMKN 4 Malang"}</span>
             </div>
           </a>
           {localStorage.getItem('username') && (

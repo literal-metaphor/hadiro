@@ -25,6 +25,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   width: 100%;
+  min-height: 100vh;
   height: 100%;
   background-color: #F2F6F9;
 }

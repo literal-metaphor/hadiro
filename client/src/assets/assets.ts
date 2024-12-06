@@ -23,6 +23,11 @@ import jurnal from './jurnal.svg';
 import pelanggaran from './pelanggaran.svg';
 import bukuuser from './bukuuser.svg';
 import arrow from './arrow.svg';
+import smkn4 from './smkn4.png';
+import upload from './upload.svg';
+import file from './file.svg';
+import fail from './fail.svg';
+import success from './success.svg';
 
 const assets = {
   hadiro,
@@ -49,7 +54,12 @@ const assets = {
   jurnal,
   pelanggaran,
   bukuuser,
-  arrow
+  arrow,
+  smkn4,
+  upload,
+  file,
+  fail,
+  success,
 };
 
 export default assets;

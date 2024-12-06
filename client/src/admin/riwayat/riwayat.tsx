@@ -121,7 +121,7 @@ function Riwayat() {
                         <div className='flex'>
                           <img
                             src={student.profile}
-                            className="mr-3"
+                            className="mr-3 w-8 rounded-full"
                           />
                           <div>
                             <span className='font-bold'>{student.name}</span><br />

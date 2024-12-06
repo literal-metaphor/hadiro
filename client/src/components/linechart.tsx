@@ -27,22 +27,22 @@ interface LineChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ data }) => {
-  const getLast7Days = (): string[] => {
+  const getLabels = (): string[] => {
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    const result: string[] = [];
     const today = new Date();
+    const labels: string[] = [];
 
-    for (let i = 6; i >= 0; i--) {
+    for (let i = data.length - 1; i >= 0; i--) {
       const date = new Date();
       date.setDate(today.getDate() - i);
       const dayName = days[date.getDay()];
-      result.push(`${dayName}`);
+      labels.push(`${dayName}`);
     }
 
-    return result;
+    return labels;
   };
 
-  const labels = getLast7Days();
+  const labels = getLabels();
 
   const chartData = {
     labels,
@@ -64,6 +64,13 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     plugins: {
       legend: {
         display: false,
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          display: labels.length <= 7,
+        },
       },
     },
   };

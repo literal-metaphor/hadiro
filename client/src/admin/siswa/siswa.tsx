@@ -119,7 +119,7 @@ function Siswa() {
                       <td className="py-2 px-4 border-b flex">
                         <img
                           src={student.profile}
-                          className="mr-3"
+                          className="mr-3 w-8 rounded-full"
                         />
                         <div>
                           <span className='font-bold'>{student.name}</span><br />

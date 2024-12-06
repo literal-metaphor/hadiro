@@ -14,11 +14,20 @@ function Beranda() {
   const [dateRange, setDateRange] = useState<string | null>("1 minggu");
   const [isExpanded, setIsExpanded] = useState<number[]>([]);
   const pieChartData = [
-    { category: "Hadir", value: 875, color: "#34A853" },
-    { category: "Sakit", value: 22, color: "#6B8CB6" },
-    { category: "Dispensasi", value: 12, color: "#FFB200" },
-    { category: "Izin", value: 15, color: "#B52FD7" },
-    { category: "T.K", value: 10, color: "#A83436" }
+    { category: "Hadir", value: 875 },//total startDate - endDate
+    { category: "Sakit", value: 22 },
+    { category: "Dispensasi", value: 12 },
+    { category: "Izin", value: 15 },
+    { category: "T.K", value: 10 }
+  ];
+  const lineChartData = [
+    { value: 50 },//date 1
+    { value: 200 },//date 2
+    { value: 150 },//date 3
+    { value: 175 },
+    { value: 250 },
+    { value: 0 },
+    { value: 0 },
   ];
   const users = [
     {
@@ -136,6 +145,16 @@ function Beranda() {
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
+  const toggleStartDate = () => {
+    setDateRange(null);
+    toggleEdit();
+    //change linechartdata & piechartdata
+  };
+  const toggleEndDate = () => {
+    setDateRange(null);
+    toggleEdit();
+    //change linechartdata & piechartdata
+  };
   return (
     <>
       <div className="flex">
@@ -152,46 +171,46 @@ function Beranda() {
               <form>
                 {isEditing ? (
                   <>
-                    <input type="date" defaultValue={startDate.toString()} max={endDate.toString()} className='border border-[#C5C5C5] rounded opacity-50' onBlur={(e) => { setStartDate(e.target.value); setDateRange(null); toggleEdit() }} />
+                    <input type="date" defaultValue={startDate.toString()} max={endDate.toString()} className='border border-[#C5C5C5] rounded opacity-50' onBlur={(e) => { toggleStartDate(); setStartDate(e.target.value) }} />
                     {" - "}
-                    <input type="date" defaultValue={endDate.toString()} min={startDate.toString()} max={new Date().toISOString().split("T")[0]} className='border border-[#C5C5C5] rounded opacity-50' onBlur={(e) => { setEndDate(e.target.value); setDateRange(null); toggleEdit() }} />
+                    <input type="date" defaultValue={endDate.toString()} min={startDate.toString()} max={new Date().toISOString().split("T")[0]} className='border border-[#C5C5C5] rounded opacity-50' onBlur={(e) => { toggleEndDate(); setEndDate(e.target.value) }} />
                   </>
                 ) : (
                   <p className="opacity-50 mt-1 hover:cursor-pointer" onClick={toggleEdit}>{formatDate(startDate)} - {formatDate(endDate)}</p>
                 )}
               </form>
               <div className="mt-5 px-12">
-                <LineChart data={[50, 200, 150, 175, 250, 0, 0]} />
+                <LineChart data={lineChartData.map(item => item.value)} />
               </div>
               <div className="mt-5 px-12 flex flex-col lg:flex-row items-center justify-between">
                 <div className="flex items-center justify-center">
-                  <PieChart data={[pieChartData[0].value, pieChartData[1].value, pieChartData[2].value, pieChartData[3].value, pieChartData[4].value]} total={934} />
+                  <PieChart data={pieChartData.map(item => item.value)} total={pieChartData.reduce((acc, item) => acc + item.value, 0)} />
                 </div>
                 <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5 lg:mt-0">
                   <div className="w-24 h-24 bg-[#34A853] text-white p-5 rounded flex flex-col items-center justify-center">
                     <span className="text-lg font-semibold">Hadir</span>
-                    <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "Hadir")?.value}</span>
+                    <span className="text-3xl font-bold">{pieChartData[0].value}</span>
                   </div>
                   <div className="w-24 h-24 bg-[#6B8CB6] text-white p-5 rounded flex flex-col items-center justify-center">
                     <span className="text-lg font-semibold">Sakit</span>
-                    <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "Sakit")?.value}</span>
+                    <span className="text-3xl font-bold">{pieChartData[1].value}</span>
                   </div>
                   <div className="block sm:hidden md:flex w-24 h-24 bg-[#FFB200] text-white p-5 rounded flex flex-col items-center justify-center">
                     <span className="text-lg font-semibold">Dispensasi</span>
-                    <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "Dispensasi")?.value}</span>
+                    <span className="text-3xl font-bold">{pieChartData[2].value}</span>
                   </div>
                   <div className="hidden sm:flex md:hidden w-24 h-24 mx-auto bg-[#FFB200] text-white p-5 rounded flex flex-col items-center justify-center col-span-2">
                     <span className="text-lg font-semibold">Dispensasi</span>
-                    <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "Dispensasi")?.value}</span>
+                    <span className="text-3xl font-bold">{pieChartData[2].value}</span>
                   </div>
                   <div className="flex justify-center gap-5 col-span-full">
                     <div className="w-24 h-24 bg-[#B52FD7] text-white p-5 rounded flex flex-col items-center justify-center">
                       <span className="text-lg font-semibold">Izin</span>
-                      <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "Izin")?.value}</span>
+                      <span className="text-3xl font-bold">{pieChartData[3].value}</span>
                     </div>
                     <div className="w-24 h-24 bg-[#A83436] text-white p-5 rounded flex flex-col items-center justify-center">
                       <span className="text-lg font-semibold">T.K</span>
-                      <span className="text-3xl font-bold">{pieChartData.find((item) => item.category === "T.K")?.value}</span>
+                      <span className="text-3xl font-bold">{pieChartData[4].value}</span>
                     </div>
                   </div>
                 </div>
@@ -205,7 +224,7 @@ function Beranda() {
                     <div className="flex" key={user.id}>
                       <img
                         src={assets.defaultprofile}
-                        className="mr-3 self-start mt-1"
+                        className="mr-3 self-start mt-1 w-8 rounded-full"
                       />
                       <div className="w-full mr-3">
                         <div className="flex justify-between items-center">
@@ -249,7 +268,7 @@ function Beranda() {
                       <div className="flex">
                         <img
                           src={assets.defaultprofile}
-                          className="mr-3"
+                          className="mr-3 w-8 rounded-full"
                         />
                         <div className="w-full">
                           <p className="text-lg font-bold w-full">{activity.name}</p>

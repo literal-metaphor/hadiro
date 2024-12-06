@@ -5,6 +5,9 @@ let currentDescriptor = null;
 let challengeDone = false;
 let canTakePhoto = false;
 
+let studentSelect = null;
+let takePhotoButton = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
     //await faceapi.nets.ssdMobilenetv1.loadFromUri('./model');
     await faceapi.nets.tinyFaceDetector.loadFromUri('./model');
@@ -13,11 +16,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     await faceapi.nets.faceRecognitionNet.loadFromUri('./model');
 
     const cameraSelect = document.getElementById("camera-select");
-    const studentSelect = document.getElementById("student-select");
     const video = document.getElementById('webcam');
     const faceCanvas = document.getElementById("face");
     const instructionCanvas = document.getElementById("instruction");
-    const takePhotoButton = document.getElementById("take-photo");
+    takePhotoButton = document.getElementById("take-photo");
+    studentSelect = document.getElementById("student-select");
 
     let currentStream = null;
 
@@ -72,10 +75,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Take Photo
     takePhotoButton.addEventListener('click', function () {
         if (canTakePhoto && currentDescriptor) {
+
+            studentSelect.disabled = true;
+            studentSelect.innerHTML = '';
+            const firstOption = document.createElement('option');
+            studentSelect.appendChild(firstOption);
+
             findClosestMatches(currentDescriptor)
                 .then(matches => {
                     if (matches.length) {
-                        studentSelect.innerHTML = ''; // Clear existing options
+                        studentSelect.disabled = false;
+                        firstOption.text = '-- Pilih siswa --';
 
                         matches.forEach(match => {
                             const option = document.createElement('option');
@@ -84,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             studentSelect.appendChild(option);
                         });
                     } else {
-                        console.log('No matches found.');
+                        firstOption.text = '-- Tidak ada siswa yang sesuai dengan wajah itu --';
                     }
                 })
                 .catch(error => console.error('Error finding closest matches:', error));
@@ -173,13 +183,10 @@ async function detectRealTime(video, faceCanvas, instructionCanvas) {
             } else {
                 if (!challengeDone) {
                     const happyScore = detection.expressions.happy;
-                    drawInstructions(`Tolong senyum dengan lebar (${Math.floor((happyScore / 0.7) * 100)}%)`);
+                    drawInstructions(`Tolong senyum dengan lebar (${Math.min(Math.floor((happyScore / 0.7) * 100), 100)}%)`);
 
                     if (happyScore > 0.7) {
                         challengeDone = true;
-                        console.log("Challenge done!");
-                        drawInstructions("Wajah siap untuk difoto");
-                        canTakePhoto = true;
                     }
                 } else {
                     drawInstructions("Wajah siap untuk difoto");
@@ -187,6 +194,8 @@ async function detectRealTime(video, faceCanvas, instructionCanvas) {
                 }
             }
         }
+
+        takePhotoButton.disabled = !canTakePhoto;
 
     }
 

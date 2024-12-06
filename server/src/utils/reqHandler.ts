@@ -5,6 +5,8 @@ import xss from "xss";
 const ALLOWED_ACTIONS = [
     "auth/login",
     "auth/otp",
+
+    "attendance/quickStats"
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 

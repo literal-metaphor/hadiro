@@ -24,13 +24,19 @@ app.use(helmet());
 // User endpoints
 const v1UserRouter = express.Router();
 app.use("/api/v1/users", v1UserRouter);
-
 v1UserRouter.post("/auth/login", async (req, res) => {
   await reqHandler(req, res, "auth/login");
 });
 v1UserRouter.post("/auth/otp", async (req, res) => {
   await reqHandler(req, res, "auth/otp");
 });
+
+// Attendance endpoints
+const v1AttendanceRouter = express.Router();
+app.use("/api/v1/attendance", v1AttendanceRouter);
+v1AttendanceRouter.get("/quick-stats", async (req, res) => {
+  await reqHandler(req, res, "attendance/quickStats");
+})
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

@@ -1,10 +1,10 @@
-export enum StudentDepartment {
-    "TG",
-    "DKV",
-    "RPL",
-    "TKJ",
-    "ANI",
-    "MEKA",
-    "LOG",
-    "PH",
+export const StudentDepartmentEnum = {
+    "TG": "TG",
+    "DKV": "DKV",
+    "RPL": "RPL",
+    "TKJ": "TKJ",
+    "ANI": "ANI",
+    "MEKA": "MEKA",
+    "LOG": "LOG",
+    "PH": "PH",
 }

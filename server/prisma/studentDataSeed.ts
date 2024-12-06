@@ -48,7 +48,7 @@ readJsonFiles(directoryPath, async (filePath) => {
             await studentPrisma.create({
                 data
             });
-            console.log(`Success inserting ${data.name}`)
+            console.log(`Success inserting ${data.name}`);
             setTimeout(() => {
                 return;
             }, 10);

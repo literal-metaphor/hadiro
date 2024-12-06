@@ -1,6 +1,6 @@
-export enum StudentDepartment {
-    "TK",
-    "IZIN",
-    "SAKIT",
-    "DISPEN",
+export const InattendanceReasonEnum = {
+    "TK": "TK",
+    "IZIN": "IZIN",
+    "SAKIT": "SAKIT",
+    "DISPEN": "DISPEN",
 }

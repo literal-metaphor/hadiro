@@ -1,5 +1,5 @@
-export enum StudentGrade {
-    "X",
-    "XI",
-    "XII",
+export const StudentGrade = {
+    "X": "X",
+    "XI": "XI",
+    "XII": "XII",
 }

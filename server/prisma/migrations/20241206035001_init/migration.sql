@@ -37,6 +37,7 @@ CREATE TABLE "attendances" (
 -- CreateTable
 CREATE TABLE "inattendances" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "reason" TEXT NOT NULL,
     "evidence_photo_path" TEXT NOT NULL,
     "student_id" TEXT NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
@@ -67,6 +68,3 @@ CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_otp_key" ON "users"("otp");
-
--- CreateIndex
-CREATE UNIQUE INDEX "students_name_key" ON "students"("name");

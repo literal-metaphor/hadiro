@@ -22,7 +22,7 @@ model users {
 
 model students {
     id              String @id
-    name            String @unique
+    name            String
     grade           String
     class_code      String
     department      String

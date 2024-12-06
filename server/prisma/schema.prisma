@@ -49,6 +49,7 @@ model attendances {
 
 model inattendances {
     id                      String @id
+    reason                  String
     evidence_photo_path     String
 
     student                 students @relation(fields: [student_id], references: [id])

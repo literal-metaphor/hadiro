@@ -2,3 +2,5 @@ node_modules
 local.db
 local.db-journal
 .env
+student_photo
+student_data

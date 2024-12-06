@@ -6,7 +6,7 @@ const ALLOWED_ACTIONS = [
     "auth/login",
     "auth/otp",
 
-    "attendance/quickStats"
+    "attendance/stats"
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 

@@ -4,7 +4,7 @@ import { mockReqHandler } from "../utils/reqHandler.js";
 
 // * NOTE: Please seed the database first for the mock data to be ready. ``prisma/seed.ts``
 
-class QuickStatsTest {
+class StatsTest {
     public async run() {
         await this.happyPath(new Date("2024-11-30"), new Date("2024-12-01"));
     
@@ -16,7 +16,7 @@ class QuickStatsTest {
             const res = await mockReqHandler({
                 from,
                 until
-            }, "attendance/quickStats");
+            }, "attendance/stats");
     
             console.log(chalk.green(`[HAPPY PATH Quick Stats] success: \n${JSON.stringify(res)}\n`));
         } catch (err) {
@@ -39,5 +39,5 @@ class QuickStatsTest {
     
 }
 
-const test = new QuickStatsTest();
+const test = new StatsTest();
 await test.run();

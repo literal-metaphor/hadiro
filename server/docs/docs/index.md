@@ -34,21 +34,21 @@ Expected Response:
 
 ---
 
-## Students Endpoints `/student`
-Students CRUD endpoints.
+## Attendances Endpoints `/attendance`
+Attendance CRUD endpoints.
 
-### 1. `/`
-Login to admin user using email and password.
+### 1. `/stats`
+Quick information about the students attendance on a certain period. Displayed on front end as line and pie chart.
 ```
 Expected Request:
 - Body:
-    - email: string
-    - password: string
+    - from: Date
+    - until: Date
 
 Expected Response:
 - Body:
-    - message: string
-    - otp: string
+    - attendances: Date[]
+    - inattendances: ("TK" | "IZIN" | "SAKIT" | "DISPEN")[]
 ```
 
 ### 2. `/auth/otp`

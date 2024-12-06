@@ -31,8 +31,9 @@ function Login() {
     }
     if (valid) {
       localStorage.setItem('email', email);
-      localStorage.setItem('username', "Revo");//this will be important later
-      window.location.href = '/beranda';
+      localStorage.setItem('username', "Revo");
+      localStorage.setItem('level', "3");//IMPORTANT (123)
+      window.location.href = '/';
     }
   }
   return (

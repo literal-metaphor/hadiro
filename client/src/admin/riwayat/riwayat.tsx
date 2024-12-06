@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import assets from '../assets/assets.ts';
-import Sidebar from "../components/sidebar"
-import Topbar from "../components/topbar"
+import assets from '../../assets/assets.ts';
+import Sidebar from "../../components/sidebar.tsx"
+import Topbar from "../../components/topbar.tsx"
 
 function Riwayat() {
   const [search, setSearch] = useState('');
@@ -74,7 +74,7 @@ function Riwayat() {
   const endItem = totalItems > 0 ? Math.min(currentPage * itemsPerPage, totalItems) : 0;
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex">
         <div className="sm:w-1/2 md:w-1/3 lg:w-1/4 h-full">
           <Sidebar active="Riwayat" />
         </div>
@@ -96,7 +96,7 @@ function Riwayat() {
                   />
                 </div>
                 <div className='flex items-center ms-3 md:ms-auto'>
-                  {startItem} - {endItem} dari {totalItems} siswa
+                  {startItem} - {endItem} dari {totalItems} data
                   <button onClick={handlePrevPage} disabled={currentPage === 1} className='bg-white hover:bg-white focus:outline-none p-0 ml-3'>
                     <img src={assets.backward} />
                   </button>
@@ -117,17 +117,19 @@ function Riwayat() {
                   {displayedStudents.map((student, index) => (
                     <tr key={student.id}>
                       <td className="py-2 px-4 border-b">{startItem + index}</td>
-                      <td className="py-2 px-4 border-b flex">
-                        <img
-                          src={student.profile}
-                          className="mr-3"
-                        />
-                        <div>
-                          <span className='font-bold'>{student.name}</span><br />
-                          <span className='opacity-50 text-sm'>{student.kelas} {student.jurusan} {student.kode}</span>
+                      <td className="py-2 px-4 border-b">
+                        <div className='flex'>
+                          <img
+                            src={student.profile}
+                            className="mr-3 w-8 rounded-full"
+                          />
+                          <div>
+                            <span className='font-bold'>{student.name}</span><br />
+                            <span className='opacity-50 text-sm'>{student.kelas} {student.jurusan} {student.kode}</span>
+                          </div>
                         </div>
                       </td>
-                      <td className="py-2 px-4 border-b">
+                      <td className="py-2 px-4 border-b flex items-center">
                         {!student.status && (
                           <>
                             <button className='bg-white hover:bg-white focus:outline-none rounded text-black border border-[#C5C5C5] py-1 w-full'>
@@ -160,6 +162,9 @@ function Riwayat() {
                             Sakit
                           </button>
                         )}
+                        {localStorage.getItem('level') != "1" ?
+                          <img src={assets.destroy} className='ml-3' />
+                        : "" }
                       </td>
                     </tr>
                   ))}

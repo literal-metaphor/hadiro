@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import assets from '../assets/assets.ts';
-import Sidebar from "../components/sidebar"
-import Topbar from "../components/topbar"
+import assets from '../../assets/assets.ts';
+import Sidebar from "../../components/sidebar.tsx"
+import Topbar from "../../components/topbar.tsx"
 
 function Siswa() {
   const [search, setSearch] = useState('');
@@ -71,7 +71,7 @@ function Siswa() {
   const endItem = totalItems > 0 ? Math.min(currentPage * itemsPerPage, totalItems) : 0;
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex">
         <div className="sm:w-1/2 md:w-1/3 lg:w-1/4 h-full">
           <Sidebar active="Siswa" />
         </div>
@@ -107,7 +107,9 @@ function Siswa() {
                   <tr>
                     <th className="py-2 px-4 border-b text-left">No.</th>
                     <th className="py-2 px-4 border-b text-left">Nama</th>
-                    <th className="py-2 px-4 border-b text-left w-1/5">Aksi</th>
+                    {localStorage.getItem('level') == "3" ?
+                      <th className="py-2 px-4 border-b text-left w-1/5">Aksi</th>
+                    : "" }
                   </tr>
                 </thead>
                 <tbody>
@@ -117,24 +119,26 @@ function Siswa() {
                       <td className="py-2 px-4 border-b flex">
                         <img
                           src={student.profile}
-                          className="mr-3"
+                          className="mr-3 w-8 rounded-full"
                         />
                         <div>
                           <span className='font-bold'>{student.name}</span><br />
                           <span className='opacity-50 text-sm'>{student.kelas} {student.jurusan} {student.kode}</span>
                         </div>
                       </td>
-                      <td className="py-2 px-4 border-b">
-                        <div className="inline-flex items-center">
-                          <img
-                            src={assets.edit}
-                            className="mr-5"
-                          />
-                          <img
-                            src={assets.destroy}
-                          />
-                        </div>
-                      </td>
+                      {localStorage.getItem('level') == "3" ?
+                        <td className="py-2 px-4 border-b">
+                          <div className="inline-flex items-center">
+                            <img
+                              src={assets.edit}
+                              className="mr-5"
+                            />
+                            <img
+                              src={assets.destroy}
+                            />
+                          </div>
+                        </td>
+                      : "" }
                     </tr>
                   ))}
                 </tbody>

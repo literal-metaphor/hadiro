@@ -17,6 +17,17 @@ import forward from './forward.svg';
 import destroy from './delete.svg';
 import edit from './edit.svg';
 import filter from './filter.svg';
+import absen from './absen.svg';
+import surat from './surat.svg';
+import jurnal from './jurnal.svg';
+import pelanggaran from './pelanggaran.svg';
+import bukuuser from './bukuuser.svg';
+import arrow from './arrow.svg';
+import smkn4 from './smkn4.png';
+import upload from './upload.svg';
+import file from './file.svg';
+import fail from './fail.svg';
+import success from './success.svg';
 
 const assets = {
   hadiro,
@@ -38,6 +49,17 @@ const assets = {
   destroy,
   edit,
   filter,
+  absen,
+  surat,
+  jurnal,
+  pelanggaran,
+  bukuuser,
+  arrow,
+  smkn4,
+  upload,
+  file,
+  fail,
+  success,
 };
 
 export default assets;

@@ -5,7 +5,24 @@ function Topbar() {
   const [search, setSearch] = useState('');
   const [filteredResults, setFilteredResults] = useState<{ name: string; path: string; }[]>([]);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  // Example search data
+  // const level = localStorage.getItem('level');//for user/admin
+  // let data = [];
+  // if(level == "1") {// Example search data
+  //   data = [//user
+  //     { name: 'Absen Sekarang', path: '/absen' },
+  //     { name: 'Surat Izin', path: '/surat' },
+  //     { name: 'Jurnal Kelas', path: '/jurnal' },
+  //     { name: 'Pelanggaran', path: '/pelanggaran' },
+  //     { name: 'Buku Tamu', path: '/bukuuser' },
+  //   ];
+  // } else {
+  //   data = [//admin
+  //     { name: 'Beranda', path: '/beranda' },
+  //     { name: 'Siswa', path: '/siswa' },
+  //     { name: 'Riwayat', path: '/riwayat' },
+  //     { name: 'Buku Tamu', path: '/buku' },
+  //   ];
+  // }
   const data = [
     { name: 'Beranda', path: '/beranda' },
     { name: 'Siswa', path: '/siswa' },
@@ -39,7 +56,7 @@ function Topbar() {
   };
   return (
     <>
-      <div className="border border-[#C5C5C5] bg-white p-4 flex justify-between items-center w-full sm:w-2/3 md:w-3/4 lg:w-4/5 z-10 fixed top-0">
+      <div className="border border-[#C5C5C5] bg-white p-4 flex justify-between items-center w-full sm:w-2/3 md:w-3/4 lg:w-4/5 z-20 fixed top-0 right-0">
         <div className="flex items-center w-1/2 lg:w-1/3 relative">
           <div className="border border-[2px] border-[#E5E5E5] rounded-lg p-2 flex items-center w-full ml-12 sm:ml-0">
             <img src={assets.search} className="mr-3 w-6" />

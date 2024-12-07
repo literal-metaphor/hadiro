@@ -38,6 +38,14 @@ v1AttendanceRouter.get("/quick-stats", async (req, res) => {
   await reqHandler(req, res, "attendance/quickStats");
 })
 
+// Face endpoints
+const v1FaceRouter = express.Router();
+app.use("/api/v1/face", v1FaceRouter);
+v1FaceRouter.post("/find-closest-matches", async (req, res) => {
+  await reqHandler(req, res, "face/findClosestMatches");
+})
+
+
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

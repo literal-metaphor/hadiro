@@ -63,3 +63,18 @@ Expected Response:
 - Body:
     - token: string
 ```
+
+## Face Endpoints `/face`
+Face API endpoints.
+
+### 1. `/find-closest-matches`
+Find closest matches from a descriptor array.
+```
+Expected Request:
+- Body:
+    - descriptor: Float32Array
+
+Expected Response:
+- Body:
+    - closestMatches: Array
+```

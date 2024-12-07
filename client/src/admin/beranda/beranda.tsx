@@ -180,7 +180,7 @@ function Beranda() {
                 )}
               </form>
               <div className="mt-5 px-12">
-                <LineChart data={lineChartData.map(item => item.value)} />
+                <LineChart data={lineChartData.map(item => item.value)} label={endDate == new Date().toISOString().split("T")[0] ? true : false} />
               </div>
               <div className="mt-5 px-12 flex flex-col lg:flex-row items-center justify-between">
                 <div className="flex items-center justify-center">

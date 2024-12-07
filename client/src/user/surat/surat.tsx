@@ -31,6 +31,7 @@ function Surat() {
     if(fileName == "Upload File Perizinan") {
       setError("Masukan File!");
     } else {
+      setFileName("Upload File Perizinan");
       // setResult("Tidak dapat mengirim coba lagi nanti");
       setResult("Surat Izin Berhasil terkirim");
     }
@@ -86,7 +87,7 @@ function Surat() {
                   />
                   Kirim Surat Izin
                 </button>
-                {error && <div className="bg-[#FF2400] text-white ms-5 mt-5 rounded-lg p-2 px-3 flex items-center justify-center">
+                {error && <div className="bg-[#FF2400] text-white ms-5 mt-5 rounded p-2 px-3 flex items-center justify-center">
                   <img src={assets.error} className='mr-3' /> {error}
                 </div>}
                 {result == "Surat Izin Berhasil terkirim" && <>

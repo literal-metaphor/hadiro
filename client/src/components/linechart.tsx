@@ -24,9 +24,10 @@ ChartJS.register(
 
 interface LineChartProps {
   data: number[];
+  label: boolean;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, label }) => {
   const getLabels = (): string[] => {
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const today = new Date();
@@ -69,7 +70,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     scales: {
       x: {
         ticks: {
-          display: labels.length <= 7,
+          display: label && labels.length <= 7,
         },
       },
     },

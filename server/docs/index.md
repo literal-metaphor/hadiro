@@ -50,16 +50,3 @@ Expected Response:
     - attendances: Date[]
     - inattendances: ("TK" | "IZIN" | "SAKIT" | "DISPEN")[]
 ```
-
-### 2. `/auth/otp`
-Login to admin user using email and password.
-```
-Expected Request:
-- Body:
-    - email: string
-    - otp: string
-
-Expected Response:
-- Body:
-    - token: string
-```

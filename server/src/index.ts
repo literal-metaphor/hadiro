@@ -17,8 +17,8 @@ app.use(cors({
   credentials: true, // Allow cookies/auth headers
   maxAge: 86400, // Cache the preflight response for 24 hours (optional)
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '4mb' }));
+app.use(express.urlencoded({ extended: true, limit: '4mb' }));
 app.use(helmet());
 
 // User endpoints
@@ -35,7 +35,7 @@ v1UserRouter.post("/auth/otp", async (req, res) => {
 const v1AttendanceRouter = express.Router();
 app.use("/api/v1/attendance", v1AttendanceRouter);
 v1AttendanceRouter.get("/quick-stats", async (req, res) => {
-  await reqHandler(req, res, "attendance/quickStats");
+  await reqHandler(req, res, "attendance/stats");
 })
 
 // Start server on available port specified in .env

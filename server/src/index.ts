@@ -34,9 +34,9 @@ v1UserRouter.post("/auth/otp", async (req, res) => {
 // Attendance endpoints
 const v1AttendanceRouter = express.Router();
 app.use("/api/v1/attendance", v1AttendanceRouter);
-v1AttendanceRouter.get("/quick-stats", async (req, res) => {
-  await reqHandler(req, res, "attendance/stats");
-})
+v1AttendanceRouter.get("/stats", async (req, res) => {
+  await reqHandler(req, res, "attendance/stats", true);
+});
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

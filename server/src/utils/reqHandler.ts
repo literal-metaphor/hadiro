@@ -1,17 +1,23 @@
 import { Request, Response } from "express";
-import HttpError from "../types/HttpError.js";
+import HttpError from "./errors/HttpError.js";
 import xss from "xss";
+import authJwt from "./authJwt.js";
 
 const ALLOWED_ACTIONS = [
     "auth/login",
     "auth/otp",
 
-    "attendance/stats"
+    "attendance/stats",
+
+    "student/paginate",
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 
-export default async function reqHandler(req: Request, res: Response, action: AllowedActions): Promise<Response<any, Record<string, any>>> {
+export default async function reqHandler(req: Request, res: Response, action: AllowedActions, guarded: boolean = false) {
     try {
+        // Guard protected endpoints with JWT
+        if (guarded) authJwt(req.headers.authorization);
+
         // Validate input according to schema
         const schema = await import(`./schemas/${action}.js`);
         let validation = schema.default().validate({...req.body, ...req.params, ...req.query});
@@ -31,7 +37,9 @@ export default async function reqHandler(req: Request, res: Response, action: Al
         if (e instanceof HttpError)
             return res.status(e.statusCode).json({ error: e.message });
     
-        return res.status(500).json({ error: "Kesalahan server, mohon coba lagi.", stack: e });
+        return res.status(500).json({ error: "Kesalahan server, mohon coba lagi.",
+            stack: e // !PLEASE COMMENT THIS ON PRODUCTION
+        });
     }
 }
 
@@ -54,7 +62,10 @@ export async function mockReqHandler(data: any, action: AllowedActions) {
         // Return the result
         return result;
     } catch (e) {
-        throw e;
+        return {
+            error: (e as Error).message,
+            trace: e
+        }
     }
 }
 

@@ -1,10 +1,10 @@
 import { userPrisma } from "../../../prisma/clients.js";
 import { compareSync, hashSync } from "bcrypt";
-import HttpError from "../../types/HttpError.js";
+import HttpError from "../../utils/errors/HttpError.js";
 import { randomBytes } from "crypto";
 
-export default async function login(data: { email: string, password: string }) {
-    let { email, password } = data;
+export default async function login(body: { email: string, password: string }) {
+    let { email, password } = body;
 
     let user = await userPrisma.findUnique({
         where: {

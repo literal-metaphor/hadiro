@@ -1,10 +1,10 @@
 import { attendancePrisma, inattendancePrisma } from "../../../prisma/clients.js";
 
-export default async function stats(data: {
+export default async function stats(body: {
     from: Date,
     until: Date
 }) {
-    const { from, until } = data;
+    const { from, until } = body;
 
     const attendances = (await attendancePrisma.findMany({
         where: {

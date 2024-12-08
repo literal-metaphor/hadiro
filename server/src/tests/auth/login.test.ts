@@ -1,6 +1,6 @@
 import { expect } from "expect"
 import chalk from "chalk";
-import { mockReqHandler } from "../utils/reqHandler.js";
+import { mockReqHandler } from "../../utils/reqHandler.js";
 
 // * NOTE: Please seed the database first for the mock data to be ready. ``prisma/seed.ts``
 

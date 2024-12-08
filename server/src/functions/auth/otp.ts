@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import { userPrisma } from "../../../prisma/clients.js";
-import HttpError from "../../types/HttpError.js";
+import HttpError from "../../utils/errors/HttpError.js";
 import { compareSync } from "bcrypt";
 
-export default async function otp(data: { email: string, otp: string, }) {
-    const { email, otp } = data;
+export default async function otp(body: { email: string, otp: string, }) {
+    const { email, otp } = body;
 
     const user = await userPrisma.findUnique({
         where: {

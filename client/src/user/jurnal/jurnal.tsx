@@ -51,7 +51,7 @@ function Jurnal() {
         </div>
         <div className="w-full pt-[78px]">
           <div className="p-12">
-            <h1 className="text-3xl font-bold mb-5">
+            <h1 className="text-3xl font-bold mb-5 text-black">
               <span onClick={() => setCurrentDepartment(null)} className="hover:cursor-pointer select-none">
                 Jurnal Kehadiran KBM SMKN 4 Malang
               </span>

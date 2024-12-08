@@ -63,6 +63,38 @@ function Camera() {
         detectRealTime(video, faceCanvas, instructionCanvas, takePhotoButton);
       }
 
+      if (takePhotoButton && studentSelect) {
+        const handleTakePhotoClick = async () => {
+          if (canTakePhoto && currentDescriptor) {
+            studentSelect.disabled = true;
+            studentSelect.innerHTML = '';
+            const firstOption = document.createElement('option');
+            studentSelect.appendChild(firstOption);
+    
+            try {
+              const matches = await findClosestMatches(currentDescriptor);
+              if (matches.length) {
+                studentSelect.disabled = false;
+                firstOption.text = '-- Pilih siswa --';
+    
+                matches.forEach((match: any) => {
+                  const option = document.createElement('option');
+                  option.value = match.label;
+                  option.text = `${match.label}`;
+                  studentSelect.appendChild(option);
+                });
+              } else {
+                firstOption.text = '-- Tidak ada siswa yang sesuai dengan wajah itu --';
+              }
+            } catch (error) {
+              console.error('Error finding closest matches:', error);
+            }
+          }
+        };
+    
+        takePhotoButton.addEventListener('click', handleTakePhotoClick);
+      }
+
       // Cleanup
       return () => {
         if (currentStream) {
@@ -162,11 +194,31 @@ function Camera() {
           }
         }
 
-        // Assuming takePhotoButton is defined somewhere in your code
         takePhotoButton.disabled = !canTakePhoto;
       }
 
       setInterval(() => detectFrame(), 500);
+    };
+
+    const findClosestMatches = async (descriptor: Float32Array) => {
+      try {
+        const response = await fetch('/api/v1/find-closest-matches', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ descriptor }),
+        });
+
+        if (!response.ok) {
+          console.error('Error:', await response.text());
+          return [];
+        }
+
+        const matches = await response.json();
+        return matches;
+      } catch (error) {
+        console.error('Fetch error:', error);
+        return [];
+      }
     };
 
     initialize();

@@ -175,7 +175,7 @@ function Camera() {
           const distance = faceapi.euclideanDistance(initialDescriptor, currentDescriptor);
 
           if (distance > 0.6) {
-            console.log("Face mismatch, restarting!");
+            //console.log("Face mismatch, restarting!");
             drawInstructions("Wajah tidak sesuai, tolong ulangi dari awal");
             initialDescriptor = null;
             challengeDone = false;

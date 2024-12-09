@@ -1,6 +1,6 @@
-import { userPrisma } from "../../../prisma/clients.js";
+import { userPrisma } from "../../../../prisma/clients.js";
 import { compareSync, hashSync } from "bcrypt";
-import HttpError from "../../utils/errors/HttpError.js";
+import HttpError from "../../../utils/errors/HttpError.js";
 import { randomBytes } from "crypto";
 
 export default async function login(body: { email: string, password: string }) {

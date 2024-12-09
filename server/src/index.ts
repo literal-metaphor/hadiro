@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import reqHandler from "./utils/reqHandler.js";
+import { RouteDictionary } from "./utils/types/RouteDictionary.js";
 
 // Configure app to work with .env
 dotenv.config();
@@ -21,55 +22,98 @@ app.use(express.json({ limit: '4mb' }));
 app.use(express.urlencoded({ extended: true, limit: '4mb' }));
 app.use(helmet());
 
-// User endpoints
-const v1UserRouter = express.Router();
-app.use("/api/v1/users", v1UserRouter);
-v1UserRouter.post("/auth/login", async (req, res) => {
-  await reqHandler(req, res, "auth/login");
-});
-v1UserRouter.post("/auth/otp", async (req, res) => {
-  await reqHandler(req, res, "auth/otp");
-});
+// Define endpoints
+const routes: RouteDictionary[] = [
+  // User
+  {
+    resource: "user",
+    method: "post",
+    path: "auth/login",
+  },
+  {
+    resource: "user",
+    method: "post",
+    path: "auth/otp",
+  },
 
-// Student endpoints
-// Note: haven't tested this yet, can someone see if this works?
-const v1StudentRouter = express.Router();
-app.use("/api/v1/student", v1StudentRouter);
-v1StudentRouter.post("/create", async (req, res) => {
-  await reqHandler(req, res, "student/create", true, 3);
-});
-v1StudentRouter.get("/paginate", async (req, res) => {
-  await reqHandler(req, res, "student/paginate", true, 1);
-});
-v1StudentRouter.get("/show", async (req, res) => {
-  await reqHandler(req, res, "student/show", true, 1);
-});
-v1StudentRouter.put("/update", async (req, res) => {
-  await reqHandler(req, res, "student/update", true, 3);
-});
-v1StudentRouter.delete("/destroy", async (req, res) => {
-  await reqHandler(req, res, "student/destroy", true, 3);
-});
+  // Student
+  {
+    resource: "student",
+    method: "post",
+    path: "create",
+    level: 3,
+  },
+  {
+    resource: "student",
+    method: "get",
+    path: "paginate",
+    level: 1,
+  },
+  {
+    resource: "student",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "student",
+    method: "put",
+    path: "update",
+    level: 3,
+  },
+  {
+    resource: "student",
+    method: "delete",
+    path: "destroy",
+    level: 3,
+  },
 
-// TODO: add CRUD endpoints for otiher resources
-// Attendance endpoints
-const v1AttendanceRouter = express.Router();
-app.use("/api/v1/attendance", v1AttendanceRouter);
-v1AttendanceRouter.get("/stats", async (req, res) => {
-  await reqHandler(req, res, "attendance/stats", true, 1);
+  // Attendance
+  {
+    resource: "attendance",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "attendance",
+    method: "get",
+    path: "paginate",
+    level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "attendance",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Face
+  {
+    resource: "face",
+    method: "post",
+    path: "findClosestMatches",
+  },
+
+  // TODO: add CRUD endpoints for oiher resources
+];
+routes.forEach((route) => {
+  app[route.method](`/api/v1/${route.resource}/${route.path}` , async (req, res) => {
+    await reqHandler(req, res, `${route.resource}/${route.path}`, !!route.level, route.level);
+  });
 });
-v1AttendanceRouter.get("/paginate", async (req, res) => {
-  await reqHandler(req, res, "attendance/paginate", true, 1);
-})
-
-
-// Face endpoints
-const v1FaceRouter = express.Router();
-app.use("/api/v1/face", v1FaceRouter);
-v1FaceRouter.post("/find-closest-matches", async (req, res) => {
-  await reqHandler(req, res, "face/findClosestMatches");
-})
-
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

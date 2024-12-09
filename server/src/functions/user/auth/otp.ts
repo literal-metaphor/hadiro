@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { userPrisma } from "../../../prisma/clients.js";
-import HttpError from "../../utils/errors/HttpError.js";
+import { userPrisma } from "../../../../prisma/clients.js";
+import HttpError from "../../../utils/errors/HttpError.js";
 import { compareSync } from "bcrypt";
 
 export default async function otp(body: { email: string, otp: string, }) {
@@ -22,6 +22,16 @@ export default async function otp(body: { email: string, otp: string, }) {
     if (!process.env.JWT_SECRET)
         throw new HttpError(500, "Service OTP sedang tidak bisa digunakan.");
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+
+    // Remove OTP from DB
+    await userPrisma.update({
+        where: {
+            email
+        },
+        data: {
+            otp: null
+        }
+    });
 
     return {
         token

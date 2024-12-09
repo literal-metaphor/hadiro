@@ -1,6 +1,6 @@
 import { studentPrisma } from "../../../prisma/clients.js";
 
-export default async function create(body: {
+export default async function update(body: {
     id: string,
     name: string,
     grade: string,

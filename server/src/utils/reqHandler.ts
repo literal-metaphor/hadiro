@@ -3,21 +3,23 @@ import HttpError from "./errors/HttpError.js";
 import xss from "xss";
 import authJwt from "./authJwt.js";
 
-const ALLOWED_ACTIONS = [
-    "auth/login",
-    "auth/otp",
+// UNUSED
+// export const ALLOWED_ACTIONS = [
+//     "auth/login",
+//     "auth/otp",
 
-    "attendance/stats",
+//     "attendance/stats",
+//     "attendance/paginate",
 
-    "student/paginate",
-    "student/create",
-    "student/show",
-    "student/update",
-    "student/destroy",
+//     "student/paginate",
+//     "student/create",
+//     "student/show",
+//     "student/update",
+//     "student/destroy",
 
-    "face/findClosestMatches"
-] as const;
-type AllowedActions = typeof ALLOWED_ACTIONS[number];
+//     "face/findClosestMatches"
+// ] as const;
+// type AllowedActions = typeof ALLOWED_ACTIONS[number];
 
 /**
 * Handles an incoming request and routes it to the appropriate action.
@@ -30,10 +32,10 @@ type AllowedActions = typeof ALLOWED_ACTIONS[number];
 * @throws {HttpError} If the request fails validation or if there is an error during the execution of the API function.
 * @returns {Promise<Response<any, Record<string, any>>>} A promise that resolves when the response is sent.
 */
-export default async function reqHandler(req: Request, res: Response, action: AllowedActions, guarded: boolean = false, level?: number): Promise<Response<any, Record<string, any>>> {
+export default async function reqHandler(req: Request, res: Response, action: string, guarded: boolean = false, level?: number): Promise<Response<any, Record<string, any>>> {
     try {
         // Guard protected endpoints with JWT
-        if (guarded) authJwt(req.headers.authorization, level || 1);
+        if (guarded) await authJwt(req.headers.authorization, level);
 
         // Validate input according to schema
         const schema = await import(`./schemas/${action}.js`);

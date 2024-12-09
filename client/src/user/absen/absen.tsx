@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar"
 import * as faceapi from '@vladmandic/face-api';
+import apiClient from '../../api/axios';
 
 function Absen() {
   const history = [
@@ -10,22 +11,28 @@ function Absen() {
     { name: "ABED GREATVO SUSENO", arrivalTime: "06.20", photo: assets.foto },
   ];
 
-  const webcamRef = useRef<HTMLVideoElement | null>(null);
-  const faceCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const instructionCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const takePhotoButtonRef = useRef<HTMLButtonElement | null>(null);
-  const studentSelectRef = useRef<HTMLSelectElement | null>(null);
+  const webcamRef = useRef<HTMLVideoElement>(null);
+  const faceCanvasRef = useRef<HTMLCanvasElement>(null);
+  const instructionCanvasRef = useRef<HTMLCanvasElement>(null);
+  const takePhotoButtonRef = useRef<HTMLButtonElement>(null);
+  const studentSelectRef = useRef<HTMLSelectElement>(null);
 
-  const initialDescriptorRef = useRef<Float32Array | null>(null);
-  const currentDescriptorRef = useRef<Float32Array | null>(null);
-  const canTakePhotoRef = useRef<boolean>(false);
-  const challengeDoneRef = useRef<boolean>(false);
+  let initialDescriptor: Float32Array | null = null;
+  let currentDescriptor: Float32Array | null = null;
+  let canTakePhoto = false;
+  let challengeDone = false;
+
+  const initializedRef = useRef(false);
 
   useEffect(() => {
     const initialize = async () => {
+      if (initializedRef.current) return;
+      initializedRef.current = true;
+
       const modelsPath = "./face-api-models";
 
       // Load models
+      //await faceapi.nets.ssdMobilenetv1.loadFromUri(modelsPath);
       await faceapi.nets.tinyFaceDetector.loadFromUri(modelsPath);
       await faceapi.nets.faceLandmark68Net.loadFromUri(modelsPath);
       await faceapi.nets.faceExpressionNet.loadFromUri(modelsPath);
@@ -44,25 +51,25 @@ function Absen() {
         if (currentStream) {
           currentStream.getTracks().forEach(track => track.stop());
         }
-      
+
         const constraints: MediaStreamConstraints = {
           audio: false,
           video: true,
         };
-      
+
         currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-        if (webcamRef.current) {
-          webcamRef.current.srcObject = currentStream;
-      
+        if (video) {
+          video.srcObject = currentStream;
+
           const settings = currentStream.getVideoTracks()[0].getSettings();
-          if (faceCanvasRef.current && instructionCanvasRef.current) {
-            faceCanvasRef.current.width = settings.width || 640;
-            faceCanvasRef.current.height = settings.height || 480;
-            instructionCanvasRef.current.width = settings.width || 640;
-            instructionCanvasRef.current.height = settings.height || 480;
+          if (faceCanvas && instructionCanvas) {
+            faceCanvas.width = settings.width || 640;
+            faceCanvas.height = settings.height || 480;
+            instructionCanvas.width = settings.width || 640;
+            instructionCanvas.height = settings.height || 480;
           }
         }
-      };      
+      };
 
       // Initialize
       await startVideoStream();
@@ -71,37 +78,39 @@ function Absen() {
       }
 
       if (takePhotoButton && studentSelect) {
-        const handleTakePhotoClick = async () => {
-          if (canTakePhotoRef.current && currentDescriptorRef.current) {
+
+        const handleTakePhotoClick = () => {
+          if (canTakePhoto && currentDescriptor) {
+            takePhotoButton.disabled = true;
             studentSelect.disabled = true;
             studentSelect.innerHTML = '';
             const firstOption = document.createElement('option');
             studentSelect.appendChild(firstOption);
-    
-            try {
-              const matches = await findClosestMatches(currentDescriptorRef.current);
-              if (matches.length) {
+
+            findClosestMatches(currentDescriptor)
+              .then((matches: any[]) => {
+                if (matches.length) {
+                  firstOption.text = '-- Pilih siswa --';
+                  matches.forEach((match: any) => {
+                    const option = document.createElement('option');
+                    option.value = match.label;
+                    option.text = `${match.label}`;
+                    studentSelect.appendChild(option);
+                  });
+                } else {
+                  firstOption.text = '-- Tidak ada siswa yang sesuai dengan wajah itu --';
+                }
+              })
+              .catch((error) => {
+                console.error('Error finding closest matches:', error);
+              })
+              .finally(() => {
+                takePhotoButton.disabled = false;
                 studentSelect.disabled = false;
-                firstOption.text = 'Pilih siswa';
-                type Match = {
-                  label: string;
-                };
-                const matches: Match[] = await findClosestMatches(currentDescriptorRef.current);
-                matches.forEach((match: Match) => {
-                  const option = document.createElement('option');
-                  option.value = match.label;
-                  option.text = `${match.label}`;
-                  studentSelect.appendChild(option);
-                });
-              } else {
-                firstOption.text = 'Tidak ada siswa yang sesuai dengan wajah itu';
-              }
-            } catch (error) {
-              console.error('Error finding closest matches:', error);
-            }
+              });
           }
         };
-    
+
         takePhotoButton.addEventListener('click', handleTakePhotoClick);
       }
 
@@ -161,77 +170,89 @@ function Absen() {
         ictx.clearRect(0, 0, instructionCanvas.width, instructionCanvas.height);
 
         if (!detection) {
-          canTakePhotoRef.current = false;
-          initialDescriptorRef.current = null;
-          challengeDoneRef.current = false;
+          canTakePhoto = false;
+          initialDescriptor = null;
+          challengeDone = false;
           drawInstructions("Wajah tidak terdeteksi");
           return;
         }
 
-        currentDescriptorRef.current = detection.descriptor;
+        currentDescriptor = detection.descriptor;
 
         // Draw boxes and details for each detection
         const box = detection.detection.box;
         const { width, height, top, left } = box;
 
         // Draw the bounding box
-        ctx.strokeStyle = 'lime';
+        ctx.strokeStyle = 'cyan';
         ctx.lineWidth = 4;
         ctx.strokeRect(left, top, width, height);
 
-        if (!initialDescriptorRef.current) {
-          initialDescriptorRef.current = detection.descriptor;
+        if (!initialDescriptor) {
+          initialDescriptor = detection.descriptor;
         } else {
-          const distance = faceapi.euclideanDistance(initialDescriptorRef.current, currentDescriptorRef.current);
+          const distance = faceapi.euclideanDistance(initialDescriptor, currentDescriptor);
 
           if (distance > 0.6) {
             //console.log("Face mismatch, restarting!");
             drawInstructions("Wajah tidak sesuai, tolong ulangi dari awal");
-            initialDescriptorRef.current = null;
-            challengeDoneRef.current = false;
+            initialDescriptor = null;
+            challengeDone = false;
           } else {
-            if (!challengeDoneRef.current) {
+            if (!challengeDone) {
               const happyScore = detection.expressions.happy;
               drawInstructions(`Tolong senyum dengan lebar (${Math.min(Math.floor((happyScore / 0.7) * 100), 100)}%)`);
 
               if (happyScore > 0.7) {
-                challengeDoneRef.current = true;
+                challengeDone = true;
               }
             } else {
               drawInstructions("Wajah siap untuk difoto");
-              canTakePhotoRef.current = true;
+              canTakePhoto = true;
             }
           }
         }
 
-        takePhotoButton.disabled = !canTakePhotoRef.current;
+        takePhotoButton.disabled = !canTakePhoto;
       }
 
       setInterval(() => detectFrame(), 500);
     };
 
     const findClosestMatches = async (descriptor: Float32Array) => {
+
+      const descriptorArray = Array.from(descriptor);
+
       try {
-        const response = await fetch('/api/v1/find-closest-matches', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ descriptor }),
-        });
+        const response = await apiClient.post('/v1/face/find-closest-matches', {
+          // Send request body as needed
+          descriptor: descriptorArray
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
 
-        if (!response.ok) {
-          console.error('Error:', await response.text());
-          return [];
+        //console.log('API Response:', response);
+        //console.log('Response Data:', response.data);
+        //console.log('Closest Matches', response.data.closestMatches)
+
+        // Ensure the response data contains the expected structure
+        if (response.data && response.data.closestMatches) {
+          //console.log('Returning closestMatches:', response.data.closestMatches);
+          return response.data.closestMatches;
+        } else {
+          console.error('Unexpected response structure:', response.data);
+          throw new Error('Unexpected response structure');
         }
-
-        const matches = await response.json();
-        return matches;
       } catch (error) {
-        console.error('Fetch error:', error);
-        return [];
+        console.error('Error fetching data:', error);
+        throw error; // Re-throw the error to be caught by the caller
       }
     };
 
     initialize();
+    
   }, []);
 
   return (

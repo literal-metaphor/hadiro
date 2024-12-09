@@ -1,0 +1,90 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    // url = env("DATABASE_URL")
+    url = "file:../local.db"
+}
+
+model users {
+    id              String @id
+    email           String @unique
+    username        String @unique
+    password        String
+    otp             String? @unique
+    level           Int
+
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+
+model students {
+    id              String @id
+    name            String
+    grade           String
+    class_code      String
+    department      String
+    descriptor      String
+    photo_path      String
+
+    attendance      attendances[]
+    inattendance    inattendances[]
+    violations      violations[]
+
+    is_deleted      Boolean @default(false)
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+model attendances {
+    id              String @id
+
+    student         students @relation(fields: [student_id], references: [id])
+    student_id      String
+
+    is_deleted      Boolean @default(false)
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+
+model inattendances {
+    id                      String @id
+    reason                  String
+    evidence_photo_path     String
+
+    student                 students @relation(fields: [student_id], references: [id])
+    student_id              String
+
+    is_deleted              Boolean @default(false)
+    created_at              DateTime @default(now())
+    updated_at              DateTime @updatedAt
+}
+
+model violations {
+    id                      String @id
+    reason                  String
+
+    student                 students @relation(fields: [student_id], references: [id])
+    student_id              String
+
+    is_deleted              Boolean @default(false)
+    created_at              DateTime @default(now())
+    updated_at              DateTime @updatedAt
+}
+
+model guests {
+    id              String @id
+    name            String
+    instance        String
+    intention       String
+    problem         String
+    phone_number    String
+    photo_path      String
+
+    is_deleted      Boolean @default(false)
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+
+// * SQLite doesn't support enum, which mean we must manually enforce the use of enums using declarations in ``src/utils/enums/``

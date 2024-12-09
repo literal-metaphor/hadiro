@@ -28,6 +28,8 @@ import upload from './upload.svg';
 import file from './file.svg';
 import fail from './fail.svg';
 import success from './success.svg';
+import camera from './camera.svg';
+import foto from './foto.png';
 
 const assets = {
   hadiro,
@@ -60,6 +62,8 @@ const assets = {
   file,
   fail,
   success,
+  camera,
+  foto,
 };
 
 export default assets;

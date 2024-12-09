@@ -10,6 +10,10 @@ const ALLOWED_ACTIONS = [
     "attendance/stats",
 
     "student/paginate",
+    "student/create",
+    "student/show",
+    "student/update",
+    "student/destroy",
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 

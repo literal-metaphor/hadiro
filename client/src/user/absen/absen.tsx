@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 // import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar"
 import * as faceapi from '@vladmandic/face-api';
+import apiClient from '../../api/axios';
 
 function Absen() {
 
@@ -16,11 +17,17 @@ function Absen() {
   let canTakePhoto = false;
   let challengeDone = false;
 
+  const initializedRef = useRef(false);
+
   useEffect(() => {
     const initialize = async () => {
+      if (initializedRef.current) return;
+      initializedRef.current = true;
+
       const modelsPath = "./face-api-models";
 
       // Load models
+      //await faceapi.nets.ssdMobilenetv1.loadFromUri(modelsPath);
       await faceapi.nets.tinyFaceDetector.loadFromUri(modelsPath);
       await faceapi.nets.faceLandmark68Net.loadFromUri(modelsPath);
       await faceapi.nets.faceExpressionNet.loadFromUri(modelsPath);
@@ -66,19 +73,19 @@ function Absen() {
       }
 
       if (takePhotoButton && studentSelect) {
-        const handleTakePhotoClick = async () => {
+        /*const handleTakePhotoClick = async () => {
           if (canTakePhoto && currentDescriptor) {
+            takePhotoButton.disabled = true;
             studentSelect.disabled = true;
             studentSelect.innerHTML = '';
             const firstOption = document.createElement('option');
             studentSelect.appendChild(firstOption);
-    
+
             try {
               const matches = await findClosestMatches(currentDescriptor);
               if (matches.length) {
-                studentSelect.disabled = false;
                 firstOption.text = '-- Pilih siswa --';
-    
+
                 matches.forEach((match: any) => {
                   const option = document.createElement('option');
                   option.value = match.label;
@@ -90,10 +97,45 @@ function Absen() {
               }
             } catch (error) {
               console.error('Error finding closest matches:', error);
+            } finally {
+              takePhotoButton.disabled = false;
+              studentSelect.disabled = false;
             }
           }
+        };*/
+
+        const handleTakePhotoClick = () => {
+          if (canTakePhoto && currentDescriptor) {
+            takePhotoButton.disabled = true;
+            studentSelect.disabled = true;
+            studentSelect.innerHTML = '';
+            const firstOption = document.createElement('option');
+            studentSelect.appendChild(firstOption);
+
+            findClosestMatches(currentDescriptor)
+              .then((matches: any[]) => {
+                if (matches.length) {
+                  firstOption.text = '-- Pilih siswa --';
+                  matches.forEach((match: any) => {
+                    const option = document.createElement('option');
+                    option.value = match.label;
+                    option.text = `${match.label}`;
+                    studentSelect.appendChild(option);
+                  });
+                } else {
+                  firstOption.text = '-- Tidak ada siswa yang sesuai dengan wajah itu --';
+                }
+              })
+              .catch((error) => {
+                console.error('Error finding closest matches:', error);
+              })
+              .finally(() => {
+                takePhotoButton.disabled = false;
+                studentSelect.disabled = false;
+              });
+          }
         };
-    
+
         takePhotoButton.addEventListener('click', handleTakePhotoClick);
       }
 
@@ -203,27 +245,39 @@ function Absen() {
     };
 
     const findClosestMatches = async (descriptor: Float32Array) => {
+
+      const descriptorArray = Array.from(descriptor);
+
       try {
-        const response = await fetch('/api/v1/find-closest-matches', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ descriptor }),
-        });
+        const response = await apiClient.post('/v1/face/find-closest-matches', {
+          // Send request body as needed
+          descriptor: descriptorArray
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
 
-        if (!response.ok) {
-          console.error('Error:', await response.text());
-          return [];
+        //console.log('API Response:', response);
+        //console.log('Response Data:', response.data);
+        //console.log('Closest Matches', response.data.closestMatches)
+
+        // Ensure the response data contains the expected structure
+        if (response.data && response.data.closestMatches) {
+          //console.log('Returning closestMatches:', response.data.closestMatches);
+          return response.data.closestMatches;
+        } else {
+          console.error('Unexpected response structure:', response.data);
+          throw new Error('Unexpected response structure');
         }
-
-        const matches = await response.json();
-        return matches;
       } catch (error) {
-        console.error('Fetch error:', error);
-        return [];
+        console.error('Error fetching data:', error);
+        throw error; // Re-throw the error to be caught by the caller
       }
     };
 
     initialize();
+    
   }, []);
 
   return (

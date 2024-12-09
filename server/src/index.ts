@@ -36,19 +36,19 @@ v1UserRouter.post("/auth/otp", async (req, res) => {
 const v1StudentRouter = express.Router();
 app.use("/api/v1/student", v1StudentRouter);
 v1StudentRouter.post("/create", async (req, res) => {
-  await reqHandler(req, res, "student/create", true);
+  await reqHandler(req, res, "student/create", true, 3);
 });
-v1StudentRouter.post("/paginate", async (req, res) => {
-  await reqHandler(req, res, "student/paginate", true);
+v1StudentRouter.get("/paginate", async (req, res) => {
+  await reqHandler(req, res, "student/paginate", true, 1);
 });
-v1StudentRouter.post("/show", async (req, res) => {
-  await reqHandler(req, res, "student/show", true);
+v1StudentRouter.get("/show", async (req, res) => {
+  await reqHandler(req, res, "student/show", true, 1);
 });
-v1StudentRouter.post("/update", async (req, res) => {
-  await reqHandler(req, res, "student/update", true);
+v1StudentRouter.put("/update", async (req, res) => {
+  await reqHandler(req, res, "student/update", true, 3);
 });
-v1StudentRouter.post("/destroy", async (req, res) => {
-  await reqHandler(req, res, "student/destroy", true);
+v1StudentRouter.delete("/destroy", async (req, res) => {
+  await reqHandler(req, res, "student/destroy", true, 3);
 });
 
 // TODO: add CRUD endpoints for otiher resources
@@ -56,8 +56,11 @@ v1StudentRouter.post("/destroy", async (req, res) => {
 const v1AttendanceRouter = express.Router();
 app.use("/api/v1/attendance", v1AttendanceRouter);
 v1AttendanceRouter.get("/stats", async (req, res) => {
-  await reqHandler(req, res, "attendance/stats", true);
+  await reqHandler(req, res, "attendance/stats", true, 1);
 });
+v1AttendanceRouter.get("/paginate", async (req, res) => {
+  await reqHandler(req, res, "attendance/paginate", true, 1);
+})
 
 
 // Face endpoints

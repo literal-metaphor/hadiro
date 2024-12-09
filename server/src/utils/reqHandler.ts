@@ -19,10 +19,21 @@ const ALLOWED_ACTIONS = [
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 
-export default async function reqHandler(req: Request, res: Response, action: AllowedActions, guarded: boolean = false) {
+/**
+* Handles an incoming request and routes it to the appropriate action.
+*
+* @param req - The incoming request object.
+* @param res - The outgoing response object.
+* @param action - The name of the action to be executed.
+* @param guarded - Optional. Whether the action requires JWT authentication. Defaults to false.
+* @param level - Optional. The level of authentication required for the action. Only applicable if `guarded` is true.
+* @throws {HttpError} If the request fails validation or if there is an error during the execution of the API function.
+* @returns {Promise<Response<any, Record<string, any>>>} A promise that resolves when the response is sent.
+*/
+export default async function reqHandler(req: Request, res: Response, action: AllowedActions, guarded: boolean = false, level?: number): Promise<Response<any, Record<string, any>>> {
     try {
         // Guard protected endpoints with JWT
-        if (guarded) authJwt(req.headers.authorization);
+        if (guarded) authJwt(req.headers.authorization, level || 1);
 
         // Validate input according to schema
         const schema = await import(`./schemas/${action}.js`);

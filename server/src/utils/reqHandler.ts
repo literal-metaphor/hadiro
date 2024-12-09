@@ -14,6 +14,8 @@ const ALLOWED_ACTIONS = [
     "student/show",
     "student/update",
     "student/destroy",
+
+    "face/findClosestMatches"
 ] as const;
 type AllowedActions = typeof ALLOWED_ACTIONS[number];
 

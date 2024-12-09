@@ -233,6 +233,10 @@ function Absen() {
           },
         })
 
+        //console.log('API Response:', response);
+        //console.log('Response Data:', response.data);
+        //console.log('Closest Matches', response.data.closestMatches)
+
         // Ensure the response data contains the expected structure
         if (response.data && response.data.closestMatches) {
           //console.log('Returning closestMatches:', response.data.closestMatches);

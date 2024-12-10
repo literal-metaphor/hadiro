@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar"
@@ -88,17 +89,18 @@ function Absen() {
             studentSelect.appendChild(firstOption);
 
             findClosestMatches(currentDescriptor)
-              .then((matches: any[]) => {
+              .then((matches: { label: string, distance: number }[]) => {
                 if (matches.length) {
-                  firstOption.text = '-- Pilih siswa --';
-                  matches.forEach((match: any) => {
+                  firstOption.text = 'Pilih siswa';
+                  matches.forEach((match) => {
                     const option = document.createElement('option');
-                    option.value = match.label;
+                    option.style.color = 'black';
+                    option.value = match.label; 
                     option.text = `${match.label}`;
                     studentSelect.appendChild(option);
                   });
                 } else {
-                  firstOption.text = '-- Tidak ada siswa yang sesuai dengan wajah itu --';
+                  firstOption.text = 'Tidak ada siswa yang sesuai dengan wajah itu';
                 }
               })
               .catch((error) => {
@@ -184,7 +186,7 @@ function Absen() {
         const { width, height, top, left } = box;
 
         // Draw the bounding box
-        ctx.strokeStyle = 'cyan';
+        ctx.strokeStyle = 'lime';
         ctx.lineWidth = 4;
         ctx.strokeRect(left, top, width, height);
 
@@ -277,7 +279,7 @@ function Absen() {
                 <div className="flex mb-5">
                   <select
                     id="studentSelect"
-                    className="bg-transparent text-white text-xl pe-5"
+                    className="bg-transparent text-white text-xl pe-5 focus:outline-none"
                     ref={studentSelectRef}
                     disabled
                   >

@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import Webcam from 'react-webcam';
 import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar";
+import React from 'react';
 
 function Bukuuser() {
   const [nama, setNama] = useState('');
@@ -8,6 +10,7 @@ function Bukuuser() {
   const [tujuan, setTujuan] = useState('');
   const [perihal, setPerihal] = useState('');
   const [nomorTelepon, setNomorTelepon] = useState('');
+  const [image, setImage] = useState<string | null>(null);
   const [errors, setErrors] = useState({
     nama: '',
     asalInstansi: '',
@@ -16,7 +19,13 @@ function Bukuuser() {
     nomorTelepon: '',
   });
   const [result, setResult] = useState('');
-
+  const webcamRef = React.useRef<Webcam>(null);
+  const capturePhoto = () => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      setImage(imageSrc); // This is the captured image in base64
+    }
+  };
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const newErrors = {
@@ -36,6 +45,8 @@ function Bukuuser() {
     setErrors(newErrors);
     const hasErrors = Object.values(newErrors).some(error => error);
     if (!hasErrors) {
+      capturePhoto();
+      console.log(image);
       setNama('');
       setAsalInstansi('');
       setTujuan('');
@@ -113,8 +124,23 @@ function Bukuuser() {
                   </label>
                   <label>
                     Foto
-                    <div className="w-full bg-black aspect-square rounded-lg mt-3">
-                      {/* CAMERA */}
+                    <div className="w-full bg-[#413C3C] mt-5 p-5 flex flex-col justify-center items-center">
+                      <div className="flex mb-5">
+                        <label
+                          className="bg-transparent text-white opacity-75 text-xl focus:outline-none"
+                        >
+                          Posisikan wajah Anda dengan tepat
+                        </label>
+                        <img src={assets.camera} className="w-8 ml-5" />
+                      </div>
+                      <div className="relative bg-[#090909] w-full aspect-[4/3] rounded-lg p-5 flex justify-center items-center">
+                        <Webcam
+                          audio={false}
+                          ref={webcamRef}
+                          screenshotFormat="image/jpeg"
+                          className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
                     </div>
                   </label>
                 </form>

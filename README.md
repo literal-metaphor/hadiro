@@ -7,11 +7,9 @@
 <br> 
 
 <p>
- 
-
-
- 
- Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran dan daftar pelanggaran yang dilakukan oleh siswa <br>
+ Hadiro merupakan web absensi khusus SMK Negeri 4 Malang.
+Website ini dibuat berdasarkan ide dari kami
+Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran dan daftar pelanggaran yang dilakukan oleh siswa
 </p>
 
 <h1>Fitur Fitur</h1>

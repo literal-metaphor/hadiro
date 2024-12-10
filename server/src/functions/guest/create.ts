@@ -9,15 +9,12 @@ export default async function create(body: {
     phone_number: string,
     photo_path: string,
 }) {
+    const data = {
+        id: randomUUID(),
+        ...body
+    }
+
     return await guestPrisma.create({
-        data: {
-            id: randomUUID(),
-            name: body.name,
-            instance: body.instance,
-            intention: body.intention,
-            problem: body.problem,
-            phone_number: body.phone_number,
-            photo_path: body.photo_path,
-        }
+        data
     });
 }

@@ -63,7 +63,7 @@ export default async function reqHandler(req: Request, res: Response, action: st
 }
 
 // Use this for testing
-export async function mockReqHandler(data: any, action: AllowedActions) {
+export async function mockReqHandler(data: any, action: string) {
     try {
         // Validate input according to schema
         const schema = await import(`./schemas/${action}.js`);

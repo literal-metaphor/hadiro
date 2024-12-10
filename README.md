@@ -13,7 +13,7 @@
 
 <h1>Fitur Fitur</h1>
 
-<h4>Halaman Absensi</h4>
+<h3>Halaman Absensi</h3>
 
 <p>
  dihalaman absensi siswa melakukan scan wajah untuk mendetect wajah agar dapat disimpan ke server. <br>

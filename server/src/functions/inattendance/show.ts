@@ -1,12 +1,12 @@
-import { attendancePrisma } from "../../../prisma/clients.js";
+import { inattendancePrisma } from "../../../prisma/clients.js";
 
 export default async function show(body: {
     id: string,
 }) {
-    return await attendancePrisma.findUnique({
+    return await inattendancePrisma.findUnique({
         where: {
             id: body.id
-        },
+        }, 
         include: {
             student: {
                 select: {

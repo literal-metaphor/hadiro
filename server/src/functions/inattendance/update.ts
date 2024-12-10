@@ -1,14 +1,16 @@
-import { randomUUID } from "crypto";
 import { inattendancePrisma } from "../../../prisma/clients.js";
 
-export default async function create(body: {
+export default async function update(body: {
+    id: string,
     student_id: string,
     reason: string,
     evidence_photo_path: string
 }) {
-    return await inattendancePrisma.create({
+    return await inattendancePrisma.update({
+        where: {
+            id: body.id
+        },
         data: {
-            id: randomUUID(),
             student: {
                 connect: {
                     id: body.student_id

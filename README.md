@@ -1,4 +1,4 @@
-# Hadiro 
+# Hadiro Website Grafika
 
 <img src="./client/public/hadiro.png">
 

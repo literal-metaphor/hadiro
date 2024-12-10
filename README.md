@@ -12,3 +12,10 @@
 </p>
 
 <h1>Fitur Fitur</h1>
+
+<h4>Halaman Absensi</h4>
+
+<p>
+ dihalaman absensi siswa melakukan scan wajah untuk mendetect wajah agar dapat disimpan ke server. <br>
+ setelah scan dilakukan , akan muncul daftar jam kehadiran dan nama siswa di halaman absensi tersebut. <br>
+</p>

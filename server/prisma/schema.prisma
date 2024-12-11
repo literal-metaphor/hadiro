@@ -87,4 +87,15 @@ model guests {
     updated_at      DateTime @updatedAt
 }
 
+model notifications {
+    id              String @id
+    
+    message         String
+    attachment_path String?
+
+    is_deleted      Boolean @default(false)
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+
 // * SQLite doesn't support enum, which mean we must manually enforce the use of enums using declarations in ``src/utils/enums/``

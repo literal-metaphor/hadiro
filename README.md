@@ -71,25 +71,25 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
   <a href="https://grafikarsa.com/members/rev0c4lor5/">
   <span>Revo</span>
   </a>
-</button>
+</button> <br>
  
 <button>
   <a href="https://grafikarsa.com/members/abiyogapermanachandra/"
   <span>Abiyoga</span>
   </a>
-</button>
+</button> <br>
 
 <button>
   <a href="https://grafikarsa.com/members/jason4931/">
   <span>Jason</span>
   </a>
-</button>
+</button> <br>
 
 <button>
   <a href="https://grafikarsa.com/members/drajad-kusuma-adi/">
   <span>Adi</span>
   </a>
-</button>
+</button> <br>
 
 
 </body>

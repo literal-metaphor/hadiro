@@ -1,9 +1,9 @@
-import { studentPrisma } from "../../../prisma/clients.js";
+import { violationPrisma } from "../../../prisma/clients.js";
 
 export default async function destroy(body: {
     id: string,
 }) {
-    return await studentPrisma.update({
+    return await violationPrisma.update({
         where: {
             id: body.id
         },

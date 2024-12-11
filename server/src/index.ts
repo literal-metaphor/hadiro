@@ -100,15 +100,92 @@ const routes: RouteDictionary[] = [
     level: 2,
   },
 
+  // Inattendance
+  {
+    resource: "inattendance",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "inattendance",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "inattendance",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "inattendance",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Guest
+  {
+    resource: "guest",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "guest",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "guest",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "guest",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Violation
+  {
+    resource: "violation",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "violation",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "violation",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "violation",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
   // Face
   {
     resource: "face",
     method: "post",
     path: "findClosestMatches",
   },
-
-  // TODO: add CRUD endpoints for oiher resources
 ];
+
 routes.forEach((route) => {
   app[route.method](`/api/v1/${route.resource}/${route.path}` , async (req, res) => {
     await reqHandler(req, res, `${route.resource}/${route.path}`, !!route.level, route.level);

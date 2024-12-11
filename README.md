@@ -67,9 +67,29 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
 
 Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah ini : 
 
-<br> https://grafikarsa.com/members/rev0c4lor5/ <br> https://grafikarsa.com/members/abiyogapermanachandra/
-<br> https://grafikarsa.com/members/jason4931/
-<br> https://grafikarsa.com/members/drajad-kusuma-adi/
+<button>
+  <a href="https://grafikarsa.com/members/rev0c4lor5/">
+  <span>Revo</span>
+  </a>
+</button>
+ 
+<button>
+  <a href="https://grafikarsa.com/members/abiyogapermanachandra/"
+  <span>Abiyoga</span>
+  </a>
+</button>
+
+<button>
+  <a href="https://grafikarsa.com/members/jason4931/">
+  <span>Jason</span>
+  </a>
+</button>
+
+<button>
+  <a href="https://grafikarsa.com/members/drajad-kusuma-adi/">
+  <span>Adi</span>
+  </a>
+</button>
 
 
 </body>

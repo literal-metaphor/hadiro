@@ -95,7 +95,7 @@ export default async function insight(body: {
             name: val.name,
 
             latestAttendance: val.attendances.length > 0
-            ? val.attendances.reduce((minDate, current) => current.time < minDate ? current.time : minDate, val.attendances[0].time)
+            ? val.attendances.reduce((minDate, current) => current.time > minDate ? current.time : minDate, val.attendances[0].time)
                 .toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' })
             : 'none',
 

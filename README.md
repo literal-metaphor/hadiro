@@ -1,7 +1,7 @@
 # Hadiro Website Absensi Grafika
 <body>
 
-<img src="./aset/hadiro.png"> <br>
+<img src="./README-assets/hadiro.png"> <br>
 
 
 <br> 
@@ -21,7 +21,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
  setelah scan dilakukan , akan muncul daftar jam kehadiran dan nama siswa di halaman absensi tersebut. <br>
 </p>
 
-<img src="./aset/halaman absensi.jpg">
+<img src="./README-assets/halaman absensi.jpg">
 
 <h3>Halaman Surat Izin</h3>
 
@@ -29,7 +29,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    dibagian ini pula siswa yang izin tidak masuk dapat melakukan perizinan.<br> dengan cara upload file surat izin yang nantinya surat tersebut. <br> akan masuk ke database dan terekap di halaman admin dan admin melapor ke kesiswaan. <br>
 </p>
 
-<img src="./aset/halaman surat izin.jpg">
+<img src="./README-assets/halaman surat izin.jpg">
 
 <h3>Halaman Jurnal</h3>
 
@@ -37,7 +37,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    dibagian ini rekap kehadiran siswa dari 25 kelas akan muncul karena surat izin akan dihubungkan ke halaman admin melalui server.<br>
 </p>
 
-<img src="./aset/halaman jurnal siswa.jpg">
+<img src="./README-assets/halaman jurnal siswa.jpg">
 
 <h3>Halaman Pelanggaran</h3>
 
@@ -46,7 +46,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    selain itu terdapat pula halaman pelanggaran diluar sekolah apabila terdapat laporan lain dari babinsa , bnn atau lembaga lainya. <br>
 </p>
 
-<img src="./aset/halaman pelanggaran siswa.jpg">
+<img src="./README-assets/halaman pelanggaran siswa.jpg">
 
 <h3>Halaman Buku Tamu</h3>
 
@@ -60,7 +60,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    * No WA : (No Wa Tamu) <br>
 </p>
 
-<img src="./aset/halaman buku tamu.jpg">
+<img src="./README-assets/halaman buku tamu.jpg">
 
 
 <h1>Lain Lain</h1>
@@ -74,7 +74,7 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
 </button> <br>
  
 <button>
-  <a href="https://grafikarsa.com/members/abiyogapermanachandra/"
+  <a href="https://grafikarsa.com/members/abiyogapermanachandra/">
   <span>Abiyoga</span>
   </a>
 </button> <br>

@@ -1,17 +1,19 @@
 import { randomUUID } from "crypto";
-import { attendancePrisma } from "../../../prisma/clients.js";
+import { violationPrisma } from "../../../prisma/clients.js";
 
 export default async function create(body: {
-    student_id: string
+    student_id: string,
+    reason: string,
 }) {
-    return await attendancePrisma.create({
+    return await violationPrisma.create({
         data: {
             id: randomUUID(),
             student: {
                 connect: {
                     id: body.student_id
                 }
-            }
+            },
+            reason: body.reason,
         }
     });
 }

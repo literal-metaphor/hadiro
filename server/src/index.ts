@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import reqHandler from "./utils/reqHandler.js";
+import { RouteDictionary } from "./utils/types/RouteDictionary.js";
 
 // Configure app to work with .env
 dotenv.config();
@@ -11,7 +12,7 @@ dotenv.config();
 // Setup Express app with CORS and basic request processing with urlencoded form data and JSON, and append protective headers with Helmet.js
 const app = express();
 app.use(cors({
-  origin: "http://localhost:5173", // Only allow this specific domain
+  origin: "http://localhost", // Only allow this specific domain
   methods: "GET, POST, PUT, DELETE", // Allow only these methods
   allowedHeaders: "Content-Type, Authorization", // Allow only these headers
   credentials: true, // Allow cookies/auth headers
@@ -21,52 +22,187 @@ app.use(express.json({ limit: '4mb' }));
 app.use(express.urlencoded({ extended: true, limit: '4mb' }));
 app.use(helmet());
 
-// User endpoints
-const v1UserRouter = express.Router();
-app.use("/api/v1/users", v1UserRouter);
-v1UserRouter.post("/auth/login", async (req, res) => {
-  await reqHandler(req, res, "auth/login");
-});
-v1UserRouter.post("/auth/otp", async (req, res) => {
-  await reqHandler(req, res, "auth/otp");
-});
+// Define endpoints
+const routes: RouteDictionary[] = [
+  // User
+  {
+    resource: "user",
+    method: "post",
+    path: "auth/login",
+  },
+  {
+    resource: "user",
+    method: "post",
+    path: "auth/otp",
+  },
 
-// Student endpoints
-// Note: haven't tested this yet, can someone see if this works?
-const v1StudentRouter = express.Router();
-app.use("/api/v1/student", v1StudentRouter);
-v1StudentRouter.post("/create", async (req, res) => {
-  await reqHandler(req, res, "student/create", true);
-});
-v1StudentRouter.post("/paginate", async (req, res) => {
-  await reqHandler(req, res, "student/paginate", true);
-});
-v1StudentRouter.post("/show", async (req, res) => {
-  await reqHandler(req, res, "student/show", true);
-});
-v1StudentRouter.post("/update", async (req, res) => {
-  await reqHandler(req, res, "student/update", true);
-});
-v1StudentRouter.post("/destroy", async (req, res) => {
-  await reqHandler(req, res, "student/destroy", true);
-});
+  // Student
+  {
+    resource: "student",
+    method: "post",
+    path: "create",
+    level: 3,
+  },
+  {
+    resource: "student",
+    method: "get",
+    path: "paginate",
+    level: 1,
+  },
+  {
+    resource: "student",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "student",
+    method: "put",
+    path: "update",
+    level: 3,
+  },
+  {
+    resource: "student",
+    method: "delete",
+    path: "destroy",
+    level: 3,
+  },
 
-// TODO: add CRUD endpoints for otiher resources
-// Attendance endpoints
-const v1AttendanceRouter = express.Router();
-app.use("/api/v1/attendance", v1AttendanceRouter);
-v1AttendanceRouter.get("/stats", async (req, res) => {
-  await reqHandler(req, res, "attendance/stats", true);
+  // Attendance
+  {
+    resource: "attendance",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "attendance",
+    method: "get",
+    path: "paginate",
+    level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "get",
+    path: "insight",
+    level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "attendance",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Inattendance
+  {
+    resource: "inattendance",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "inattendance",
+    method: "get",
+    path: "paginate",
+    level: 1,
+  },
+  {
+    resource: "inattendance",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "inattendance",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "inattendance",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Guest
+  {
+    resource: "guest",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "guest",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "guest",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "guest",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Violation
+  {
+    resource: "violation",
+    method: "post",
+    path: "create",
+    level: 2,
+  },
+  {
+    resource: "violation",
+    method: "get",
+    path: "show",
+    level: 1,
+  },
+  {
+    resource: "violation",
+    method: "put",
+    path: "update",
+    level: 2,
+  },
+  {
+    resource: "violation",
+    method: "delete",
+    path: "destroy",
+    level: 2,
+  },
+
+  // Face
+  {
+    resource: "face",
+    method: "post",
+    path: "findClosestMatches",
+  },
+];
+
+routes.forEach((route) => {
+  app[route.method](`/api/v1/${route.resource}/${route.path}` , async (req, res) => {
+    await reqHandler(req, res, `${route.resource}/${route.path}`, !!route.level, route.level);
+  });
 });
-
-
-// Face endpoints
-const v1FaceRouter = express.Router();
-app.use("/api/v1/face", v1FaceRouter);
-v1FaceRouter.post("/find-closest-matches", async (req, res) => {
-  await reqHandler(req, res, "face/findClosestMatches");
-})
-
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

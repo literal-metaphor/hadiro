@@ -111,7 +111,5 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
   </a>
 </button>
 
-# API with Made The Project
-<h1>https://hadiro.readthedocs.io</h1>
 
 </body>

@@ -5,11 +5,11 @@ import Sidebar from "../../components/sidebar"
 import * as faceapi from '@vladmandic/face-api';
 import apiClient from '../../api/axios';
 
-function Absen() {
+async function Absen() {
   const history = [
-    { name: "JANE DOE", arrivalTime: "07.10", photo: assets.foto },
-    { name: "JOHN SMITH", arrivalTime: "06.45", photo: assets.foto },
-    { name: "ABED GREATVO SUSENO", arrivalTime: "06.20", photo: assets.foto },
+    { student: "JANE DOE", created_at: "07.10", photo: assets.foto },
+    { student: "JOHN SMITH", created_at: "06.45", photo: assets.foto },
+    { student: "ABED GREATVO SUSENO", created_at: "06.20", photo: assets.foto },
   ];
 
   const webcamRef = useRef<HTMLVideoElement>(null);
@@ -226,7 +226,7 @@ function Absen() {
       const descriptorArray = Array.from(descriptor);
 
       try {
-        const response = await apiClient.post('/v1/face/find-closest-matches', {
+        const response = await apiClient.post('/face/findClosestMatches', {
           // Send request body as needed
           descriptor: descriptorArray
         }, {
@@ -316,8 +316,8 @@ function Absen() {
                 >
                   <img src={item.photo} className="h-full object-cover" />
                   <div className="ml-5 flex flex-col">
-                    <span className="font-semibold">{item.name}</span>
-                    <span>Jam Kedatangan: {item.arrivalTime}</span>
+                    <span className="font-semibold">{item.student}</span>
+                    <span>Jam Kedatangan: {item.created_at}</span>
                   </div>
                 </div>
               ))}

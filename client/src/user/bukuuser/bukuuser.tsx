@@ -3,6 +3,7 @@ import Webcam from 'react-webcam';
 import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar";
 import React from 'react';
+import apiClient from '../../api/axios.ts';
 
 function Bukuuser() {
   const [nama, setNama] = useState('');
@@ -26,7 +27,7 @@ function Bukuuser() {
       setImage(imageSrc); // This is the captured image in base64
     }
   };
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const newErrors = {
       nama: '',
@@ -47,6 +48,33 @@ function Bukuuser() {
     if (!hasErrors) {
       capturePhoto();
       console.log(image);
+      //server
+      // const response = await apiClient.post('/guest/create', {
+      //   name: nama,
+      //   instance: asalInstansi,
+      //   intention: tujuan,
+      //   problem: perihal,
+      //   phone_number: nomorTelepon,
+      //   photo_path: image //base64
+      // }, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // if (response.data) {
+      //   capturePhoto();
+      //   console.log(image);
+      //   setNama('');
+      //   setAsalInstansi('');
+      //   setTujuan('');
+      //   setPerihal('');
+      //   setNomorTelepon('');
+      //   setResult('Pesan anda telah terkirim, Terimakasih masukannya');
+      // } else {
+      //   console.error('Unexpected response structure:', response.data);
+      //   throw new Error('Unexpected response structure');
+      // }
+      //client
       setNama('');
       setAsalInstansi('');
       setTujuan('');

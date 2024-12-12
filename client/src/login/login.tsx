@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import assets from '../assets/assets.ts';
+import apiClient from '../api/axios';
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -10,7 +11,7 @@ function Login() {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors('');
     let valid = true;
@@ -30,6 +31,27 @@ function Login() {
       setErrors('Masukan Email dan Password!');
     }
     if (valid) {
+      //server
+      // const response = await apiClient.post('/user/auth/login', {
+      //   email: email,
+      //   password: password
+      // }, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // if (response.data) {
+      //   localStorage.setItem('token', response.data.otp);
+      //   localStorage.setItem('email', email);
+      //   localStorage.setItem('username', "Revo");
+      //   localStorage.setItem('level', "3");//IMPORTANT (123)
+      //   window.location.href = '/';
+      // } else {
+      //   console.error('Unexpected response structure:', response.data);
+      //   throw new Error('Unexpected response structure');
+      // }
+      //client
+      localStorage.setItem('token', "token123");
       localStorage.setItem('email', email);
       localStorage.setItem('username', "Revo");
       localStorage.setItem('level', "3");//IMPORTANT (123)

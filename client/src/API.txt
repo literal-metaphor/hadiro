@@ -1,0 +1,66 @@
+Login:
+  POST /user/auth/login
+    req: { email, password }
+    res:
+      otp (v)
+      email (x)
+      username (x)
+      level (x)
+
+USER:
+  Absen:
+    /? (get semua data kehadiran hari ini)
+    POST /face/find-closest-matches
+      req: { descriptor }
+      res:
+        closestMatches (v)
+  Buku:
+    POST /guest/create
+      req: { name, instance, intention, problem, phone_number, photo_path }
+      res: none
+  Jurnal:
+    /? (get pdf file berupa tabel absensi)
+  Pelanggaran:
+    /? (get pelanggaran terlambat, seragam, luar)
+  Surat:
+    /? (post surat izin (file) utk izin/dispen)
+
+ADMIN:
+  Beranda:
+    /? (total data H,S,D,I,T utk piechart)
+    /attendance/stats? (data kehadiran tiaphari from-until)
+    GET /attendance/insight
+      res:
+        users {
+          name (v)
+          attendanceRatio (v)
+          attendanceTimeAvg (v)
+          latestAttendance (v)
+          mostInattendanceReason (v)
+        }
+    /? (get semua data kehadiran hari ini)
+  Buku:
+    /guest/paginate? (get semua guests paginate)
+  Riwayat:
+    GET /attendance/paginate
+    res:
+      data {
+        id (v)
+        name (v)
+        profile (x)
+        grade (v)
+        department (v)
+        class_code (v)
+        status (x)
+      }
+  Siswa:
+    GET /student/paginate
+    res:
+      data {
+        id (v)
+        name (v)
+        profile (x)
+        grade (v)
+        department (v)
+        class_code (v)
+      }

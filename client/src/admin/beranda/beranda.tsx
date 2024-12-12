@@ -4,8 +4,9 @@ import Sidebar from "../../components/sidebar";
 import Topbar from "../../components/topbar";
 import LineChart from '../../components/linechart';
 import PieChart from '../../components/piechart';
+import apiClient from '../../api/axios.ts';
 
-function Beranda() {
+async function Beranda() {
   const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]);
@@ -29,30 +30,44 @@ function Beranda() {
     { value: 0 },
     { value: 0 },
   ];
+  //server
+  // let users = [];
+  // const response = await apiClient.get('/attendance/insight', {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  // if (response.data) {
+  //   users = response.data;
+  // } else {
+  //   console.error('Unexpected response structure:', response.data);
+  //   throw new Error('Unexpected response structure');
+  // }
+  //client
   const users = [
     {
       id: 1,
       name: "Imanuel Revo Admojo",
-      attendanceRate: "99.9%",
-      avgAttendanceTime: "05:49",
-      lastAttendance: "17 Agustus 1945",
-      commonAbsenceReason: "Sakit",
+      attendanceRatio: "99.9%",
+      attendanceTimeAvg: "05:49",
+      latestAttendance: "17 Agustus 1945",
+      mostInattendanceReason: "Sakit",
     },
     {
       id: 2,
       name: "Emmanuel Jason",
-      attendanceRate: "95.0%",
-      avgAttendanceTime: "06:15",
-      lastAttendance: "16 Agustus 1945",
-      commonAbsenceReason: "Libur",
+      attendanceRatio: "95.0%",
+      attendanceTimeAvg: "06:15",
+      latestAttendance: "16 Agustus 1945",
+      mostInattendanceReason: "Libur",
     },
     {
       id: 3,
       name: "User",
-      attendanceRate: "90.1%",
-      avgAttendanceTime: "06:41",
-      lastAttendance: "15 Agustus 1945",
-      commonAbsenceReason: "TK",
+      attendanceRatio: "90.1%",
+      attendanceTimeAvg: "06:41",
+      latestAttendance: "15 Agustus 1945",
+      mostInattendanceReason: "TK",
     },
   ];
   const recentActivities = [
@@ -76,8 +91,8 @@ function Beranda() {
     },
   ];
   const sortedUsers = [...users].sort((a, b) => {
-    const aRate = parseFloat(a.attendanceRate);
-    const bRate = parseFloat(b.attendanceRate);
+    const aRate = parseFloat(a.attendanceRatio);
+    const bRate = parseFloat(b.attendanceRatio);
 
     if (hadir == "kehadiran") {
       return sort == "tinggi" ? bRate - aRate : aRate - bRate;
@@ -249,10 +264,10 @@ function Beranda() {
                         </div>
                         {isExpanded.includes(user.id) && (
                           <ul className="opacity-50 list-disc pl-8 mt-3">
-                            <li>Tingkat kehadiran <b>{user.attendanceRate}</b></li>
-                            <li>Rata-rata waktu kehadiran <b>{user.avgAttendanceTime}</b></li>
-                            <li>Kehadiran terakhir pada <b>{user.lastAttendance}</b></li>
-                            <li>Alasan ketidakhadiran paling sering <b>{user.commonAbsenceReason}</b></li>
+                            <li>Tingkat kehadiran <b>{user.attendanceRatio}</b></li>
+                            <li>Rata-rata waktu kehadiran <b>{user.attendanceTimeAvg}</b></li>
+                            <li>Kehadiran terakhir pada <b>{user.latestAttendance}</b></li>
+                            <li>Alasan ketidakhadiran paling sering <b>{user.mostInattendanceReason}</b></li>
                           </ul>
                         )}
                       </div>

@@ -13,16 +13,16 @@ import Jurnal from './user/jurnal/jurnal.tsx';
 import Pelanggaran from './user/pelanggaran/pelanggaran.tsx';
 import Bukuuser from './user/bukuuser/bukuuser.tsx';
 
-const email = localStorage.getItem('email');//this is basically token
+const token = localStorage.getItem('token');//this is basically token
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={email ? <Navigate to={"/beranda"} /> : <Navigate to={"/absen"} />} />
+        <Route path="/" element={token ? <Navigate to={"/beranda"} /> : <Navigate to={"/absen"} />} />
 
         {/* admin */}
-        {email && (
+        {token && (
           <>
             <Route path="/beranda" element={<Beranda />} />
             <Route path="/siswa" element={<Siswa />} />
@@ -32,7 +32,7 @@ createRoot(document.getElementById('root')!).render(
         )}
 
         {/* user */}
-        {(!email) && (
+        {(!token) && (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/absen" element={<Absen />} />

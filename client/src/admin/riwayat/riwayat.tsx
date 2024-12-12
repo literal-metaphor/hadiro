@@ -2,21 +2,36 @@ import { useState } from 'react';
 import assets from '../../assets/assets.ts';
 import Sidebar from "../../components/sidebar.tsx"
 import Topbar from "../../components/topbar.tsx"
+import apiClient from '../../api/axios.ts';
 
-function Riwayat() {
+async function Riwayat() {
   const [search, setSearch] = useState('');
+  //server
+  // let data = [];
+  // const response = await apiClient.get('/attendance/paginate', {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  // if (response.data) {
+  //   data = response.data.result;
+  // } else {
+  //   console.error('Unexpected response structure:', response.data);
+  //   throw new Error('Unexpected response structure');
+  // }
+  //client
   const [data] = useState([
-    { id: 1, name: 'John Doe', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'A', status: 'Hadir' },
-    { id: 2, name: 'Jane Smith', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'B', status: 'Izin' },
-    { id: 3, name: 'Emily Johnson', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'TG', kode: 'C', status: 'Dispen' },
-    { id: 4, name: 'Michael Brown', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'D', status: 'Hadir' },
-    { id: 5, name: 'Chris Green', profile: assets.defaultprofile, kelas: 'X', jurusan: 'MEKA', kode: 'E', status: 'TK' },
-    { id: 6, name: 'Laura White', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'TKJ', kode: 'F', status: 'Hadir' },
-    { id: 7, name: 'Tom Black', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'RPL', kode: 'G', status: 'Sakit' },
-    { id: 8, name: 'Nina Grey', profile: assets.defaultprofile, kelas: 'X', jurusan: 'PH', kode: 'H', status: 'Hadir' },
-    { id: 9, name: 'Steve Red', profile: assets.defaultprofile, kelas: 'XI', jurusan: 'DKV', kode: 'I', status: 'Hadir' },
-    { id: 10, name: 'Lily Blue', profile: assets.defaultprofile, kelas: 'XII', jurusan: 'MEKA', kode: 'J', status: 'Hadir' },
-    { id: 11, name: 'Harry Pink', profile: assets.defaultprofile, kelas: 'X', jurusan: 'RPL', kode: 'K', status: 'Hadir' },
+    { id: 1, name: 'John Doe', profile: assets.defaultprofile, grade: 'X', department: 'RPL', class_code: 'A', status: 'Hadir' },
+    { id: 2, name: 'Jane Smith', profile: assets.defaultprofile, grade: 'XI', department: 'DKV', class_code: 'B', status: 'Izin' },
+    { id: 3, name: 'Emily Johnson', profile: assets.defaultprofile, grade: 'XII', department: 'TG', class_code: 'C', status: 'Dispen' },
+    { id: 4, name: 'Michael Brown', profile: assets.defaultprofile, grade: 'X', department: 'RPL', class_code: 'D', status: 'Hadir' },
+    { id: 5, name: 'Chris Green', profile: assets.defaultprofile, grade: 'X', department: 'MEKA', class_code: 'E', status: 'TK' },
+    { id: 6, name: 'Laura White', profile: assets.defaultprofile, grade: 'XI', department: 'TKJ', class_code: 'F', status: 'Hadir' },
+    { id: 7, name: 'Tom Black', profile: assets.defaultprofile, grade: 'XII', department: 'RPL', class_code: 'G', status: 'Sakit' },
+    { id: 8, name: 'Nina Grey', profile: assets.defaultprofile, grade: 'X', department: 'PH', class_code: 'H', status: 'Hadir' },
+    { id: 9, name: 'Steve Red', profile: assets.defaultprofile, grade: 'XI', department: 'DKV', class_code: 'I', status: 'Hadir' },
+    { id: 10, name: 'Lily Blue', profile: assets.defaultprofile, grade: 'XII', department: 'MEKA', class_code: 'J', status: 'Hadir' },
+    { id: 11, name: 'Harry Pink', profile: assets.defaultprofile, grade: 'X', department: 'RPL', class_code: 'K', status: 'Hadir' },
   ]);
   const [filteredResults, setFilteredResults] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,9 +45,9 @@ function Riwayat() {
     setSearch(value);
     const filteredData = data.filter((item) => {
       const matchesSearch = item.name.toLowerCase().includes(value.toLowerCase());
-      const matchesKelas = kelas ? item.kelas == kelas : true;
-      const matchesJurusan = jurusan ? item.jurusan == jurusan : true;
-      const matchesKode = kode ? item.kode == kode.toUpperCase() : true;
+      const matchesKelas = kelas ? item.grade == kelas : true;
+      const matchesJurusan = jurusan ? item.department == jurusan : true;
+      const matchesKode = kode ? item.class_code == kode.toUpperCase() : true;
       const matchesStatus = status ? item.status == status : true;
       return matchesSearch && matchesKelas && matchesJurusan && matchesKode && matchesStatus;
     });
@@ -42,9 +57,9 @@ function Riwayat() {
   const handleFilter = () => {
     const filteredData = data.filter((student) => {
       const matchesSearch = student.name.toLowerCase().includes(search.toLowerCase());
-      const matchesKelas = kelas ? student.kelas == kelas : true;
-      const matchesJurusan = jurusan ? student.jurusan == jurusan : true;
-      const matchesKode = kode ? student.kode == kode.toUpperCase() : true;
+      const matchesKelas = kelas ? student.grade == kelas : true;
+      const matchesJurusan = jurusan ? student.department == jurusan : true;
+      const matchesKode = kode ? student.class_code == kode.toUpperCase() : true;
       const matchesStatus = status ? student.status == status : true;
       return matchesSearch && matchesKelas && matchesJurusan && matchesKode && matchesStatus;
     });
@@ -125,7 +140,7 @@ function Riwayat() {
                           />
                           <div>
                             <span className='font-bold'>{student.name}</span><br />
-                            <span className='opacity-50 text-sm'>{student.kelas} {student.jurusan} {student.kode}</span>
+                            <span className='opacity-50 text-sm'>{student.grade} {student.department} {student.class_code}</span>
                           </div>
                         </div>
                       </td>

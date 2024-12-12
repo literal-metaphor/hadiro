@@ -1,50 +1,50 @@
-# Hadiro API V1 Documentation `/api/v1`
+# Dokumentasi API Hadiro V1 `/api/v1`
 
 ---
 
-## Auth Endpoints `/auth`
-Auth endpoints for admin dashboard.
+## Endpoint Autentikasi `/auth`
+Endpoint autentikasi untuk dasbor admin.
 
 ### 1. Login `/login`
-Login to admin user using email and password.
+Login ke pengguna admin menggunakan email dan kata sandi.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - email: string
     - password: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - message: string
     - otp: string
 ```
 
 ### 2. OTP `/otp`
-Login to admin user using email and password.
+Login ke pengguna admin menggunakan email dan kata sandi.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - email: string
     - otp: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - token: string
 ```
 
 ---
 
-## Student Endpoints `/student`
-Student CRUD endpoints.
+## Endpoint Siswa `/student`
+Endpoint CRUD siswa.
 
-### 1. Create `/create`
-Create a new student.
+### 1. Buat `/create`
+Buat siswa baru.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - name: string
     - grade: string
     - class_code: string
@@ -52,8 +52,8 @@ Expected Request:
     - descriptor: string
     - photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - grade: string
@@ -66,19 +66,19 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
-Paginate students.
+### 2. Halaman `/paginate`
+Halaman siswa.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - page?: number
     - grade?: string
     - class_code?: string
     - department?: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - result: [
         - id: string
         - name: string
@@ -93,16 +93,16 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Show `/show`
-Show a specific student.
+### 3. Tampilkan `/show`
+Tampilkan siswa tertentu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - student_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - grade: string
@@ -115,12 +115,12 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 4. Update `/update`
-Update a student.
+### 4. Perbarui `/update`
+Perbarui siswa.
 ```
-Expected Request:
-- Method: PUT
-- Body:
+Permintaan yang Diharapkan:
+- Metode: PUT
+- Badan:
     - student_id: string
     - name: string
     - grade: string
@@ -129,8 +129,8 @@ Expected Request:
     - descriptor: string
     - photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - grade: string
@@ -143,16 +143,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 5. Destroy `/destroy`
-Delete a student.
+### 5. Hapus `/destroy`
+Hapus siswa.
 ```
-Expected Request:
-- Method: DELETE
-- Body:
+Permintaan yang Diharapkan:
+- Metode: DELETE
+- Badan:
     - student_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - grade: string
@@ -167,19 +167,19 @@ Expected Response:
 
 ---
 
-## Attendance Endpoints `/attendance`
-Attendance CRUD endpoints.
+## Endpoint Kehadiran `/attendance`
+Endpoint CRUD kehadiran.
 
-### 1. Create `/create`
-Create a new attendance record.
+### 1. Buat `/create`
+Buat catatan kehadiran baru.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - student_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - is_deleted: boolean
@@ -187,16 +187,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
-Paginate attendance records.
+### 2. Halaman `/paginate`
+Halaman catatan kehadiran.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - page?: number
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - result: [
         - id: string
         - student_id: string
@@ -207,16 +207,16 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Insight `/insight`
-Get insights about attendance records.
+### 3. Wawasan `/insight`
+Dapatkan wawasan tentang catatan kehadiran.
 ```
-Expected Request:
-- Method: GET
-- Body:
-    - [No request body needed]
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
+    - [Tidak ada badan permintaan yang diperlukan]
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - [
         - name: string
         - latestAttendance: string
@@ -226,31 +226,31 @@ Expected Response:
       ]
 ```
 
-### 4. Stats `/stats`
-Quick information about the students attendance on a certain period. Displayed on front end as line and pie chart.
+### 4. Statistik `/stats`
+Informasi cepat tentang kehadiran siswa pada periode tertentu. Ditampilkan di front end sebagai grafik garis dan pie.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - from: Date
     - until: Date
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - attendances: Date[]
     - inattendances: ("TK" | "IZIN" | "SAKIT" | "DISPEN")[]
 ```
 
-### 5. Show `/show`
-Show a specific attendance record.
+### 5. Tampilkan `/show`
+Tampilkan catatan kehadiran tertentu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - attendance_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - is_deleted: boolean
@@ -266,17 +266,17 @@ Expected Response:
     ]
 ```
 
-### 6. Update `/update`
-Update an attendance record.
+### 6. Perbarui `/update`
+Perbarui catatan kehadiran.
 ```
-Expected Request:
-- Method: PUT
-- Body:
+Permintaan yang Diharapkan:
+- Metode: PUT
+- Badan:
     - attendance_id: string
     - student_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - is_deleted: boolean
@@ -284,16 +284,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 7. Destroy `/destroy`
-Delete an attendance record.
+### 7. Hapus `/destroy`
+Hapus catatan kehadiran.
 ```
-Expected Request:
-- Method: DELETE
-- Body:
+Permintaan yang Diharapkan:
+- Metode: DELETE
+- Badan:
     - attendance_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - is_deleted: true
@@ -303,21 +303,21 @@ Expected Response:
 
 ---
 
-## Inattendance Endpoints `/inattendance`
-Inattendance CRUD endpoints.
+## Endpoint Ketidakhadiran `/inattendance`
+Endpoint CRUD ketidakhadiran.
 
-### 1. Create `/create`
-Create a new inattendance record.
+### 1. Buat `/create`
+Buat catatan ketidakhadiran baru.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - student_id: string
     - reason: string
     - evidence_photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -327,16 +327,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
-Paginate inattendance records.
+### 2. Halaman `/paginate`
+Halaman catatan ketidakhadiran.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - page?: number
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - result: [
         - id: string
         - student_id: string
@@ -349,16 +349,16 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Show `/show`
-Show a specific inattendance record.
+### 3. Tampilkan `/show`
+Tampilkan catatan ketidakhadiran tertentu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - inattendance_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -376,19 +376,19 @@ Expected Response:
     ]
 ```
 
-### 4. Update `/update`
-Update an inattendance record.
+### 4. Perbarui `/update`
+Perbarui catatan ketidakhadiran.
 ```
-Expected Request:
-- Method: PUT
-- Body:
+Permintaan yang Diharapkan:
+- Metode: PUT
+- Badan:
     - inattendance_id: string
     - student_id: string
     - reason: string
     - evidence_photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -398,16 +398,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 5. Destroy `/destroy`
-Delete an inattendance record.
+### 5. Hapus `/destroy`
+Hapus catatan ketidakhadiran.
 ```
-Expected Request:
-- Method: DELETE
-- Body:
+Permintaan yang Diharapkan:
+- Metode: DELETE
+- Badan:
     - inattendance_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -419,15 +419,15 @@ Expected Response:
 
 ---
 
-## Guest Endpoints `/guest`
-Guest CRUD endpoints.
+## Endpoint Tamu `/guest`
+Endpoint CRUD tamu.
 
-### 1. Create `/create`
-Create a new guest record.
+### 1. Buat `/create`
+Buat catatan tamu baru.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - name: string
     - instance: string
     - intention: string
@@ -435,8 +435,8 @@ Expected Request:
     - phone_number: string
     - photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - instance: string
@@ -449,16 +449,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
-Paginate guest records.
+### 2. Halaman `/paginate`
+Halaman catatan tamu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - page?: number
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - result: [
         - id: string
         - name: string
@@ -474,16 +474,16 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Show `/show`
-Show a specific guest record.
+### 3. Tampilkan `/show`
+Tampilkan catatan tamu tertentu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - guest_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - instance: string
@@ -496,12 +496,12 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 4. Update `/update`
-Update a guest record.
+### 4. Perbarui `/update`
+Perbarui catatan tamu.
 ```
-Expected Request:
-- Method: PUT
-- Body:
+Permintaan yang Diharapkan:
+- Metode: PUT
+- Badan:
     - guest_id: string
     - name: string
     - instance: string
@@ -510,8 +510,8 @@ Expected Request:
     - phone_number: string
     - photo_path: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - instance: string
@@ -524,16 +524,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 5. Destroy `/destroy`
-Delete a guest record.
+### 5. Hapus `/destroy`
+Hapus catatan tamu.
 ```
-Expected Request:
-- Method: DELETE
-- Body:
+Permintaan yang Diharapkan:
+- Metode: DELETE
+- Badan:
     - guest_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - name: string
     - instance: string
@@ -548,20 +548,20 @@ Expected Response:
 
 ---
 
-## Violation Endpoints `/violation`
-Violation CRUD endpoints.
+## Endpoint Pelanggaran `/violation`
+Endpoint CRUD pelanggaran.
 
-### 1. Create `/create`
-Create a new violation record.
+### 1. Buat `/create`
+Buat catatan pelanggaran baru.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - student_id: string
     - reason: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -570,16 +570,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
-Paginate violation records.
+### 2. Halaman `/paginate`
+Halaman catatan pelanggaran.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - page?: number
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - result: [
         - id: string
         - student_id: string
@@ -591,16 +591,16 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Show `/show`
-Show a specific violation record.
+### 3. Tampilkan `/show`
+Tampilkan catatan pelanggaran tertentu.
 ```
-Expected Request:
-- Method: GET
-- Body:
+Permintaan yang Diharapkan:
+- Metode: GET
+- Badan:
     - violation_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -609,18 +609,18 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 4. Update `/update`
-Update a violation record.
+### 4. Perbarui `/update`
+Perbarui catatan pelanggaran.
 ```
-Expected Request:
-- Method: PUT
-- Body:
+Permintaan yang Diharapkan:
+- Metode: PUT
+- Badan:
     - violation_id: string
     - student_id: string
     - reason: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -629,16 +629,16 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 5. Destroy `/destroy`
-Delete a violation record.
+### 5. Hapus `/destroy`
+Hapus catatan pelanggaran.
 ```
-Expected Request:
-- Method: DELETE
-- Body:
+Permintaan yang Diharapkan:
+- Metode: DELETE
+- Badan:
     - violation_id: string
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - id: string
     - student_id: string
     - reason: string
@@ -649,19 +649,19 @@ Expected Response:
 
 ---
 
-## Face Endpoints `/face`
-Face API endpoints.
+## Endpoint Wajah `/face`
+Endpoint API wajah.
 
-### 1. Find Closest Matches `/findClosestMatches`
-Find closest matches from a descriptor array.
+### 1. Menemukan Kecocokan Terdekat `/findClosestMatches`
+Temukan kecocokan terdekat dari array descriptor.
 ```
-Expected Request:
-- Method: POST
-- Body:
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
     - descriptor: Float32Array
 
-Expected Response:
-- Body:
+Respon yang Diharapkan:
+- Badan:
     - closestMatches: [
         - label: string
         - distance: number

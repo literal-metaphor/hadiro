@@ -3,3 +3,7 @@
     --md-primary-fg-color--light: #66A2F0;
     --md-primary-fg-color--dark:  #114D9B;
 }
+
+.i18n-link {
+    display: none;
+}

@@ -1,4 +1,4 @@
-import { studentPrisma, userPrisma } from "../../../prisma/clients.js";
+import { studentPrisma } from "../../../prisma/clients.js";
 
 const labeledDescriptors = (await studentPrisma.findMany()).map(val => {
     return {

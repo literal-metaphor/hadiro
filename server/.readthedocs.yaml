@@ -12,7 +12,7 @@ build:
 
 python:
   install:
-    - requirements: ./.readthedocs-requirements.txt
+    - requirements: ./server/.readthedocs-requirements.txt
 
 # Build documentation with Mkdocs
 mkdocs:

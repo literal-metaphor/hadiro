@@ -1,8 +1,8 @@
 site_name: Hadiro API Docs
 theme:
   name: material
-  logo: https://raw.githubusercontent.com/literal-metaphor/hadiro/refs/heads/rest-abi/server/docs/assets/logo.png
-  favicon: https://raw.githubusercontent.com/literal-metaphor/hadiro/refs/heads/rest-abi/server/docs/assets/logo.png
+  logo: https://raw.githubusercontent.com/literal-metaphor/hadiro/refs/heads/main/server/docs/assets/logo.png
+  favicon: https://raw.githubusercontent.com/literal-metaphor/hadiro/refs/heads/main/server/docs/assets/logo.png
   language: en
   palette:
     primary: custom

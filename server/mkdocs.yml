@@ -1,1 +1,30 @@
 site_name: Hadiro API Docs
+theme:
+  name: material
+  language: en
+  palette:
+    primary: custom
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  alternate:
+    - name: English
+      link: /en/ 
+      lang: en
+    - name: Bahasa Indonesia
+      link: /id/
+      lang: id
+
+plugins:
+  - search
+  - i18n:
+      default_language: en
+      languages:
+        en: English
+        id: Bahasa Indonesia
+
+nav:
+  - Home: index.md
+  - Beranda: index.id.md

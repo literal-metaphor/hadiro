@@ -82,7 +82,7 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
 </button> <br><br>
 
 <h2> Drajad Kusuma Adi </h2>
-<h5> UI Designer , Backend Developer , Tester </h5>
+<h5> Backend Developer , Tester </h5>
 
 <button>
   <a href="https://grafikarsa.com/members/drajad-kusuma-adi/">

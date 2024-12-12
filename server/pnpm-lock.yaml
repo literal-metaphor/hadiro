@@ -38,6 +38,9 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.1
+      file-type-checker:
+        specifier: ^1.1.2
+        version: 1.1.2
       helmet:
         specifier: ^8.0.0
         version: 8.0.0
@@ -579,6 +582,9 @@ packages:
   express@4.21.1:
     resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
     engines: {node: '>= 0.10.0'}
+
+  file-type-checker@1.1.2:
+    resolution: {integrity: sha512-HodBNiinBQNHQfXhXzAuHkU2udHF3LFS6PAOEZqxW+BjotZVCaMR7ckpTTnvLi718dbzRavnjRX0kbSb5pJG3g==}
 
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
@@ -1590,6 +1596,8 @@ snapshots:
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
+
+  file-type-checker@1.1.2: {}
 
   fill-range@7.1.1:
     dependencies:

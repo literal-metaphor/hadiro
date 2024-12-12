@@ -3,22 +3,6 @@
 
 <img src="./aset/hadiro.png"> <br>
 
-<style>
-   button {
-      width: 200px;
-      height: 50px;
-      color: white;
-      background: blue;
-   }
-   button a{
-      color: #fff;
-      font-weight: 23;
-      font-size: 1.7rem;
-      letter-spacing: 0.1rem;
-   }
-</style>
-
-
 <br> 
 
 <p>

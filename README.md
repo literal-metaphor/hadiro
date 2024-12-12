@@ -91,7 +91,7 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
 </button> <br><br>
 
 <h2> Emmanuel Jason </h2>
-<h5> Frontend Developer , Tester </h5>
+<h5> Frontend Developer , Full Stack Analyst, Tester </h5>
 
 
 <button>

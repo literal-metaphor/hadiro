@@ -64,6 +64,8 @@
 
 <h1>Lain Lain</h1>
 
+<a href="https://hadiro.readthedocs.io/en/latest/">API Docs</a>
+
 Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah ini : 
 
  

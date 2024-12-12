@@ -1,15 +1,30 @@
 # Hadiro Website Absensi Grafika
 <body>
 
-<img src="./README-assets/hadiro.png"> <br>
+<img src="./aset/hadiro.png"> <br>
+
+<style>
+   button {
+      width: 200px;
+      height: 50px;
+      color: white;
+      background: blue;
+   }
+   button a{
+      color: #fff;
+      font-weight: 23;
+      font-size: 1.7rem;
+      letter-spacing: 0.1rem;
+   }
+</style>
 
 
 <br> 
 
 <p>
- Hadiro merupakan web absensi khusus SMK Negeri 4 Malang.
-Website ini dibuat berdasarkan ide dari kami
-Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran dan daftar pelanggaran yang dilakukan oleh siswa
+ Hadiro merupakan web absensi khusus SMK Negeri 4 Malang.<br>
+ Website ini dibuat berdasarkan ide dari kami <br>
+ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran dan daftar pelanggaran yang dilakukan oleh siswa <br>
 </p>
 
 <h1>Fitur Fitur</h1>
@@ -21,7 +36,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
  setelah scan dilakukan , akan muncul daftar jam kehadiran dan nama siswa di halaman absensi tersebut. <br>
 </p>
 
-<img src="./README-assets/halaman absensi.jpg">
+<img src="./aset/halaman absensi.jpg">
 
 <h3>Halaman Surat Izin</h3>
 
@@ -29,7 +44,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    dibagian ini pula siswa yang izin tidak masuk dapat melakukan perizinan.<br> dengan cara upload file surat izin yang nantinya surat tersebut. <br> akan masuk ke database dan terekap di halaman admin dan admin melapor ke kesiswaan. <br>
 </p>
 
-<img src="./README-assets/halaman surat izin.jpg">
+<img src="./aset/halaman surat izin.jpg">
 
 <h3>Halaman Jurnal</h3>
 
@@ -37,7 +52,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    dibagian ini rekap kehadiran siswa dari 25 kelas akan muncul karena surat izin akan dihubungkan ke halaman admin melalui server.<br>
 </p>
 
-<img src="./README-assets/halaman jurnal siswa.jpg">
+<img src="./aset/halaman jurnal siswa.jpg">
 
 <h3>Halaman Pelanggaran</h3>
 
@@ -46,7 +61,7 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    selain itu terdapat pula halaman pelanggaran diluar sekolah apabila terdapat laporan lain dari babinsa , bnn atau lembaga lainya. <br>
 </p>
 
-<img src="./README-assets/halaman pelanggaran siswa.jpg">
+<img src="./aset/halaman pelanggaran siswa.jpg">
 
 <h3>Halaman Buku Tamu</h3>
 
@@ -60,36 +75,54 @@ Selain absensi juga tersedia fitur lain nya seperi buku tamu , jurnal kehadiran 
    * No WA : (No Wa Tamu) <br>
 </p>
 
-<img src="./README-assets/halaman buku tamu.jpg">
+<img src="./aset/halaman buku tamu.jpg">
 
 
 <h1>Lain Lain</h1>
 
 Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah ini : 
 
+ 
+
+<br>
+
+# Creator Of Project 
+
+<h2> Imanuel Revo Admojo </h2>
+<h5> UI Designer , UX & Frontend Analyst , Tester </h5> 
+
 <button>
   <a href="https://grafikarsa.com/members/rev0c4lor5/">
   <span>Revo</span>
   </a>
-</button> <br>
- 
-<button>
-  <a href="https://grafikarsa.com/members/abiyogapermanachandra/">
-  <span>Abiyoga</span>
-  </a>
-</button> <br>
+</button> <br><br>
 
-<button>
-  <a href="https://grafikarsa.com/members/jason4931/">
-  <span>Jason</span>
-  </a>
-</button> <br>
+<h2> Drajad Kusuma Adi </h2>
+<h5> UI Designer , Backend Developer , Tester </h5>
 
 <button>
   <a href="https://grafikarsa.com/members/drajad-kusuma-adi/">
   <span>Adi</span>
   </a>
-</button> <br>
+</button> <br><br>
 
+<h2> Emmanuel Jason </h2>
+<h5> Frontend Developer , Tester </h5>
+
+
+<button>
+  <a href="https://grafikarsa.com/members/jason4931/">
+  <span>Jason</span>
+  </a>
+</button>
+
+<h2> Abiyoga Permana Chandra
+<h5> Backend Developer , Camera Tester </h5>
+
+<button>
+  <a href="https://grafikarsa.com/members/abiyogapermanachandra/">
+  <span>Abiyoga</span>
+  </a>
+</button>
 
 </body>

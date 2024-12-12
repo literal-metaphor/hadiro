@@ -5,6 +5,6 @@ export default function schema() {
     return Joi.object({
         id: Joi.string().required(),
         student_id: Joi.string().required(),
-        reason: Joi.string().required().valid(Object.keys(ViolationReasonEnum)),
+        reason: Joi.string().required().valid(...Object.keys(ViolationReasonEnum)),
     }); 
 }

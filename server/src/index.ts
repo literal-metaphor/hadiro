@@ -5,6 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import reqHandler from "./utils/reqHandler.js";
 import { RouteDictionary } from "./utils/types/RouteDictionary.js";
+import dlJournal from "./functions/student/dlJournal.js";
 
 // Configure app to work with .env
 dotenv.config();
@@ -208,6 +209,8 @@ routes.forEach((route) => {
     await reqHandler(req, res, `${route.resource}/${route.path}`, !!route.level, route.level);
   });
 });
+
+app.get(`/api/v1/student/dlJournal`, dlJournal as any); // This works, but I have no idea where the type error came from
 
 // Start server on available port specified in .env
 const PORT = process.env.PORT || 3000;

@@ -84,6 +84,12 @@ const routes: RouteDictionary[] = [
   {
     resource: "attendance",
     method: "get",
+    path: "stats",
+    // level: 1,
+  },
+  {
+    resource: "attendance",
+    method: "get",
     path: "insight",
     // level: 1,
   },

@@ -5,7 +5,7 @@ import Sidebar from "../../components/sidebar"
 import * as faceapi from '@vladmandic/face-api';
 import apiClient from '../../api/axios';
 
-async function Absen() {
+function Absen() {
   const history = [
     { student: "JANE DOE", created_at: "07.10", photo: assets.foto },
     { student: "JOHN SMITH", created_at: "06.45", photo: assets.foto },

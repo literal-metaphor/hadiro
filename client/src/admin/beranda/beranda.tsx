@@ -6,7 +6,7 @@ import LineChart from '../../components/linechart';
 import PieChart from '../../components/piechart';
 import apiClient from '../../api/axios.ts';
 
-async function Beranda() {
+function Beranda() {
   const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]);

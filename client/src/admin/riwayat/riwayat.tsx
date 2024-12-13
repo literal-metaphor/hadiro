@@ -4,7 +4,7 @@ import Sidebar from "../../components/sidebar.tsx"
 import Topbar from "../../components/topbar.tsx"
 import apiClient from '../../api/axios.ts';
 
-async function Riwayat() {
+function Riwayat() {
   const [search, setSearch] = useState('');
   //server
   // let data = [];

@@ -53,16 +53,7 @@ export default async function dlJournal(req: Request, res: Response) {
                         },
                         is_deleted: false
                     }
-                },
-                inattendance: {
-                    where: {
-                        created_at: {
-                            gte: monday,
-                            lte: friday
-                        },
-                        is_deleted: false
-                    }
-                },
+                }
             },
         }));
 
@@ -84,12 +75,7 @@ export default async function dlJournal(req: Request, res: Response) {
             days.forEach(day => {
                 for (const att of d.attendance) {
                   if (day === att.created_at.getDay()) {
-                    attendances[day] = "HADIR";
-                  }
-                }
-                for (const inatt of d.inattendance) {
-                  if (day === inatt.created_at.getDay()) {
-                    attendances[day] = inatt.reason;
+                    attendances[day] = att.status;
                   }
                 }
             });

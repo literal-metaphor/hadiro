@@ -1,4 +1,5 @@
-import { attendancePrisma, inattendancePrisma } from "../../../prisma/clients.js"
+import { attendancePrisma } from "../../../prisma/clients.js"
+import { AttendanceStatusEnum } from "../../utils/enums/AttendanceStatus.js";
 
 export default async function insight(body: {
     // attendance?: boolean
@@ -11,10 +12,13 @@ export default async function insight(body: {
         (async () => {
             return await attendancePrisma.findMany({
                 where: {
+                    status: AttendanceStatusEnum.HADIR,
+
                     created_at: {
                         gte: oneMonthAgo,
                         lte: today
-                    }
+                    },
+                    is_deleted: false
                 },
                 include: {
                     student: {
@@ -26,12 +30,16 @@ export default async function insight(body: {
             });
         })(),
         (async () => {
-            return await inattendancePrisma.findMany({
+            return await attendancePrisma.findMany({
                 where: {
+                    status: {
+                        not: AttendanceStatusEnum.HADIR,
+                    },
                     created_at: {
                         gte: oneMonthAgo,
                         lte: today
-                    }
+                    },
+                    is_deleted: false
                 },
                 include: {
                     student: {
@@ -76,13 +84,13 @@ export default async function insight(body: {
             for (const val of inattendances) {
                 const found = records.findIndex(record => record.name === val.student.name);
                 if (found !== -1) {
-                    records[found].inattendances.push({ reason: val.reason });
+                    records[found].inattendances.push({ reason: val.status });
                 } else {
                     records.push({
                         name: val.student.name,
                         attendances: [],
                         inattendances: [{
-                            reason: val.reason
+                            reason: val.status
                         }],
                     });
                 }

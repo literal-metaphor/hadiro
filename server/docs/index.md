@@ -1,6 +1,5 @@
 # Hadiro API V1 Documentation `/api/v1`
 
-## https://hadiro.readthedocs.io/
 ---
 
 ## Auth Endpoints `/auth`

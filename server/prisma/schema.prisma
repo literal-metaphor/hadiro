@@ -31,7 +31,6 @@ model students {
     photo_path      String
 
     attendance      attendances[]
-    inattendance    inattendances[]
     violations      violations[]
 
     is_deleted      Boolean @default(false)
@@ -39,20 +38,9 @@ model students {
     updated_at      DateTime @updatedAt
 }
 model attendances {
-    id              String @id
-
-    student         students @relation(fields: [student_id], references: [id])
-    student_id      String
-
-    is_deleted      Boolean @default(false)
-    created_at      DateTime @default(now())
-    updated_at      DateTime @updatedAt
-}
-
-model inattendances {
     id                      String @id
-    reason                  String
-    evidence_photo_path     String
+    status                  String
+    evidence_photo_path     String?
 
     student                 students @relation(fields: [student_id], references: [id])
     student_id              String

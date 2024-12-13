@@ -187,7 +187,20 @@ Respon yang Diharapkan:
     - updated_at: DateTime
 ```
 
-### 2. Halaman `/paginate`
+### 2. Kirim Bukti `/uploadEvidence`
+Kirim bukti surat izin/dispensasi.
+```
+Permintaan yang Diharapkan:
+- Metode: POST
+- Badan:
+    - file_base64: string
+
+Respon yang Diharapkan:
+- Badan:
+    - filename: string
+```
+
+### 3. Halaman `/paginate`
 Halaman catatan kehadiran.
 ```
 Permintaan yang Diharapkan:
@@ -207,7 +220,7 @@ Respon yang Diharapkan:
     - totalPages: number
 ```
 
-### 3. Wawasan `/insight`
+### 4. Wawasan `/insight`
 Dapatkan wawasan tentang catatan kehadiran.
 ```
 Permintaan yang Diharapkan:
@@ -226,7 +239,7 @@ Respon yang Diharapkan:
       ]
 ```
 
-### 4. Statistik `/stats`
+### 5. Statistik `/stats`
 Informasi cepat tentang kehadiran siswa pada periode tertentu. Ditampilkan di front end sebagai grafik garis dan pie.
 ```
 Permintaan yang Diharapkan:
@@ -241,7 +254,7 @@ Respon yang Diharapkan:
     - inattendances: ("TK" | "IZIN" | "SAKIT" | "DISPEN")[]
 ```
 
-### 5. Tampilkan `/show`
+### 6. Tampilkan `/show`
 Tampilkan catatan kehadiran tertentu.
 ```
 Permintaan yang Diharapkan:
@@ -266,7 +279,7 @@ Respon yang Diharapkan:
     ]
 ```
 
-### 6. Perbarui `/update`
+### 7. Perbarui `/update`
 Perbarui catatan kehadiran.
 ```
 Permintaan yang Diharapkan:
@@ -284,7 +297,7 @@ Respon yang Diharapkan:
     - updated_at: DateTime
 ```
 
-### 7. Hapus `/destroy`
+### 8. Hapus `/destroy`
 Hapus catatan kehadiran.
 ```
 Permintaan yang Diharapkan:
@@ -296,122 +309,6 @@ Respon yang Diharapkan:
 - Badan:
     - id: string
     - student_id: string
-    - is_deleted: true
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
----
-
-## Endpoint Ketidakhadiran `/inattendance`
-Endpoint CRUD ketidakhadiran.
-
-### 1. Buat `/create`
-Buat catatan ketidakhadiran baru.
-```
-Permintaan yang Diharapkan:
-- Metode: POST
-- Badan:
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-
-Respon yang Diharapkan:
-- Badan:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
-### 2. Halaman `/paginate`
-Halaman catatan ketidakhadiran.
-```
-Permintaan yang Diharapkan:
-- Metode: GET
-- Badan:
-    - page?: number
-
-Respon yang Diharapkan:
-- Badan:
-    - result: [
-        - id: string
-        - student_id: string
-        - reason: string
-        - evidence_photo_path: string
-        - is_deleted: boolean
-        - created_at: DateTime
-        - updated_at: DateTime
-      ]
-    - totalPages: number
-```
-
-### 3. Tampilkan `/show`
-Tampilkan catatan ketidakhadiran tertentu.
-```
-Permintaan yang Diharapkan:
-- Metode: GET
-- Badan:
-    - inattendance_id: string
-
-Respon yang Diharapkan:
-- Badan:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-    - student: [
-        - id: string
-        - name: string
-        - grade: string
-        - class_code: string
-        - department: string
-        - photo_path: string
-    ]
-```
-
-### 4. Perbarui `/update`
-Perbarui catatan ketidakhadiran.
-```
-Permintaan yang Diharapkan:
-- Metode: PUT
-- Badan:
-    - inattendance_id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-
-Respon yang Diharapkan:
-- Badan:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
-### 5. Hapus `/destroy`
-Hapus catatan ketidakhadiran.
-```
-Permintaan yang Diharapkan:
-- Metode: DELETE
-- Badan:
-    - inattendance_id: string
-
-Respon yang Diharapkan:
-- Badan:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
     - is_deleted: true
     - created_at: DateTime
     - updated_at: DateTime

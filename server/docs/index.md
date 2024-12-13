@@ -187,7 +187,20 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 2. Paginate `/paginate`
+### 2. Upload Evidence `/uploadEvidence`
+Upload evidence for inattendance/dispensation letter.
+```
+Expected Request:
+- Method: POST
+- Body:
+    - file_base64: string
+
+Expected Response:
+- Body:
+    - filename: string
+```
+
+### 3. Paginate `/paginate`
 Paginate attendance records.
 ```
 Expected Request:
@@ -207,7 +220,7 @@ Expected Response:
     - totalPages: number
 ```
 
-### 3. Insight `/insight`
+### 4. Insight `/insight`
 Get insights about attendance records.
 ```
 Expected Request:
@@ -226,7 +239,7 @@ Expected Response:
       ]
 ```
 
-### 4. Stats `/stats`
+### 5. Stats `/stats`
 Quick information about the students attendance on a certain period. Displayed on front end as line and pie chart.
 ```
 Expected Request:
@@ -241,7 +254,7 @@ Expected Response:
     - inattendances: ("TK" | "IZIN" | "SAKIT" | "DISPEN")[]
 ```
 
-### 5. Show `/show`
+### 6. Show `/show`
 Show a specific attendance record.
 ```
 Expected Request:
@@ -266,7 +279,7 @@ Expected Response:
     ]
 ```
 
-### 6. Update `/update`
+### 7. Update `/update`
 Update an attendance record.
 ```
 Expected Request:
@@ -284,7 +297,7 @@ Expected Response:
     - updated_at: DateTime
 ```
 
-### 7. Destroy `/destroy`
+### 8. Destroy `/destroy`
 Delete an attendance record.
 ```
 Expected Request:
@@ -296,122 +309,6 @@ Expected Response:
 - Body:
     - id: string
     - student_id: string
-    - is_deleted: true
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
----
-
-## Inattendance Endpoints `/inattendance`
-Inattendance CRUD endpoints.
-
-### 1. Create `/create`
-Create a new inattendance record.
-```
-Expected Request:
-- Method: POST
-- Body:
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-
-Expected Response:
-- Body:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
-### 2. Paginate `/paginate`
-Paginate inattendance records.
-```
-Expected Request:
-- Method: GET
-- Body:
-    - page?: number
-
-Expected Response:
-- Body:
-    - result: [
-        - id: string
-        - student_id: string
-        - reason: string
-        - evidence_photo_path: string
-        - is_deleted: boolean
-        - created_at: DateTime
-        - updated_at: DateTime
-      ]
-    - totalPages: number
-```
-
-### 3. Show `/show`
-Show a specific inattendance record.
-```
-Expected Request:
-- Method: GET
-- Body:
-    - inattendance_id: string
-
-Expected Response:
-- Body:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-    - student: [
-        - id: string
-        - name: string
-        - grade: string
-        - class_code: string
-        - department: string
-        - photo_path: string
-    ]
-```
-
-### 4. Update `/update`
-Update an inattendance record.
-```
-Expected Request:
-- Method: PUT
-- Body:
-    - inattendance_id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-
-Expected Response:
-- Body:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
-    - is_deleted: boolean
-    - created_at: DateTime
-    - updated_at: DateTime
-```
-
-### 5. Destroy `/destroy`
-Delete an inattendance record.
-```
-Expected Request:
-- Method: DELETE
-- Body:
-    - inattendance_id: string
-
-Expected Response:
-- Body:
-    - id: string
-    - student_id: string
-    - reason: string
-    - evidence_photo_path: string
     - is_deleted: true
     - created_at: DateTime
     - updated_at: DateTime

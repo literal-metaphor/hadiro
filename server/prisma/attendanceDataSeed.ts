@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { InattendanceReasonEnum } from '../src/utils/enums/InattendanceReason.js';
-import { attendancePrisma, inattendancePrisma, studentPrisma } from './clients.js';
+import { AttendanceStatusEnum } from '../src/utils/enums/AttendanceStatus.js';
+import { attendancePrisma, studentPrisma } from './clients.js';
 
 try {
     const currentDate = new Date();
@@ -15,6 +15,7 @@ try {
             if (isAttending) {
                 const data = {
                     id: randomUUID(),
+                    status:  AttendanceStatusEnum.HADIR,
                     student: {
                         connect: {
                             id: studentData.id
@@ -31,10 +32,10 @@ try {
                 console.log(`Attending on ${date.toLocaleDateString("en-US")}: ${studentData.name}`);
             }
             else {
-                const reason = Object.keys(InattendanceReasonEnum)[Math.floor(Math.random() * Object.keys(InattendanceReasonEnum).length)];
+                const status = Object.keys(AttendanceStatusEnum)[Math.floor(Math.random() * (Object.keys(AttendanceStatusEnum).length - 1) + 1 )];
                 const data = {
                     id: randomUUID(),
-                    reason,
+                    status,
                     evidence_photo_path: "nothing :))",
                     student: {
                         connect: {
@@ -43,9 +44,9 @@ try {
                     },
                     created_at: date,
                     updated_at: date
-                } as Prisma.inattendancesCreateInput;
+                } as Prisma.attendancesCreateInput;
 
-                await inattendancePrisma.create({
+                await attendancePrisma.create({
                     data
                 });
 

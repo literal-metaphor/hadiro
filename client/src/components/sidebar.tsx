@@ -28,6 +28,7 @@ function Sidebar({ active }: SidebarProps) {
     localStorage.removeItem('email');
     localStorage.removeItem('username');
     localStorage.removeItem('level');
+    localStorage.removeItem('token');
     window.location.href = '/';
   };
   const toggleSidebar = () => {

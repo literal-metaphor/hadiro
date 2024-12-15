@@ -556,11 +556,17 @@ Expected Request:
 - Method: POST
 - Body:
     - descriptor: Float32Array
+    - grade: string
+    - department: string
+    - class_code: string
 
 Expected Response:
 - Body:
     - closestMatches: [
         - label: string
+        - grade: string
+        - department: string
+        - class_code: string
         - distance: number
     ]
 ```

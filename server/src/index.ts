@@ -13,7 +13,7 @@ dotenv.config();
 // Setup Express app with CORS and basic request processing with urlencoded form data and JSON, and append protective headers with Helmet.js
 const app = express();
 app.use(cors({
-  origin: "http://localhost", // Only allow this specific domain
+  origin: "http://localhost:5173", // Only allow this specific domain
   methods: "GET, POST, PUT, DELETE", // Allow only these methods
   allowedHeaders: "Content-Type, Authorization", // Allow only these headers
   credentials: true, // Allow cookies/auth headers

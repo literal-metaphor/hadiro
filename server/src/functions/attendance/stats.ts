@@ -1,4 +1,5 @@
-import { attendancePrisma, inattendancePrisma } from "../../../prisma/clients.js";
+import { attendancePrisma } from "../../../prisma/clients.js";
+import { AttendanceStatusEnum } from "../../utils/enums/AttendanceStatus.js";
 
 export default async function stats(body: {
     from: Date,
@@ -8,10 +9,12 @@ export default async function stats(body: {
 
     const attendances = (await attendancePrisma.findMany({
         where: {
+            status: AttendanceStatusEnum.HADIR,
             created_at: {
                 gte: from,
                 lte: until
-            }
+            },
+            is_deleted: false
         }
     // })).map(val => {
     //     return {
@@ -20,14 +23,18 @@ export default async function stats(body: {
     // });
     })).map(val => val.created_at);
 
-    const inattendances = (await inattendancePrisma.findMany({
+    const inattendances = (await attendancePrisma.findMany({
         where: {
+            status: {
+                not: AttendanceStatusEnum.HADIR,
+            },
             created_at: {
                 gte: from,
                 lte: until
-            }
+            },
+            is_deleted: false
         }
-    })).map(val => val.reason);
+    })).map(val => val.status);
 
     return {
         attendances,

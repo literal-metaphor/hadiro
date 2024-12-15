@@ -5,7 +5,8 @@ export default async function destroy(body: {
 }) {
     return await guestPrisma.update({
         where: {
-            id: body.id
+            id: body.id,
+            is_deleted: false
         },
         data: {
             is_deleted: true

@@ -15,7 +15,8 @@ export default async function update(body: {
 
     return await studentPrisma.update({
         where: {
-            id
+            id,
+            is_deleted: false
         },
         data
     });

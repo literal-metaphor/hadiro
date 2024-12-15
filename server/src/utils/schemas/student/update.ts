@@ -12,14 +12,14 @@ export default function schema() {
         ,
         grade: Joi.string()
             .required()
-            .valid(Object.keys(StudentGradeEnum))
+            .valid(...Object.keys(StudentGradeEnum))
         ,
         class_code: Joi.string()
             .required()
         ,
         department: Joi.string()
             .required()
-            .valid(Object.keys(StudentDepartmentEnum))
+            .valid(...Object.keys(StudentDepartmentEnum))
         ,
         descriptor: Joi.string()
             .required()

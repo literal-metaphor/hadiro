@@ -5,7 +5,8 @@ export default async function show(body: {
 }) {
     return await guestPrisma.findUnique({
         where: {
-            id: body.id
+            id: body.id,
+            is_deleted: false
         }
     });
 }

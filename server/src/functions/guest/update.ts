@@ -11,7 +11,8 @@ export default async function update(body: {
 }) {
     return await guestPrisma.update({
         where: {
-            id: body.id
+            id: body.id,
+            is_deleted: false
         },
         data: {
             name: body.name,

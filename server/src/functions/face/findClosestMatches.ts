@@ -3,6 +3,9 @@ import { studentPrisma } from "../../../prisma/clients.js";
 const labeledDescriptors = (await studentPrisma.findMany()).map(val => {
     return {
         label: val.name,
+        grade: val.grade,
+        department: val.department,
+        class_code: val.class_code,
         descriptor: new Float32Array(val.descriptor.split(',').map(Number))
     }
 });
@@ -24,23 +27,44 @@ function euclideanDistance(descriptor1: Float32Array, descriptor2: Float32Array)
 
 }
 
-export default async function findClosestMatches(data: {descriptor: Float32Array}) {
+export default async function findClosestMatches(data: {
+    descriptor: Float32Array,
+    grade: string,
+    department: string,
+    class_code: string
+}) {
 
-    let { descriptor } = data;
+    const topN = 1;
+
+    let { descriptor, grade, department, class_code } = data;
 
     let descriptorArray = new Float32Array(Object.values(descriptor));
 
-    const matches = labeledDescriptors.map(labeledDescriptor => {
+    // Filter labeledDescriptors based on grade, department, and class_code
+    const filteredDescriptors = labeledDescriptors.filter(labeledDescriptor => {
+        return labeledDescriptor.grade === grade &&
+               labeledDescriptor.department === department &&
+               labeledDescriptor.class_code === class_code;
+    });
+
+    // Calculate the distances
+    const matches = filteredDescriptors.map(labeledDescriptor => {
         const distance = euclideanDistance(labeledDescriptor.descriptor, descriptorArray);
-        return { label: labeledDescriptor.label, distance: distance };
+        return { 
+            label: labeledDescriptor.label,
+            grade: labeledDescriptor.grade,
+            department: labeledDescriptor.department,
+            class_code: labeledDescriptor.class_code,
+            distance: distance 
+        };
     });
 
     // Sort matches by distance (ascending)
     matches.sort((a, b) => a.distance - b.distance);
 
-    // Return the top 10 closest matches
+    // Return the top N closest match(es)
     return {
-        closestMatches: matches.slice(0, 10)
+        closestMatches: matches.slice(0, topN)
     }
 
 }

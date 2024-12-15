@@ -556,11 +556,17 @@ Permintaan yang Diharapkan:
 - Metode: POST
 - Badan:
     - descriptor: Float32Array
+    - grade: string
+    - department: string
+    - class_code: string
 
 Respon yang Diharapkan:
 - Badan:
     - closestMatches: [
         - label: string
+        - grade: string
+        - department: string
+        - class_code: string
         - distance: number
     ]
 ```

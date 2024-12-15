@@ -43,8 +43,28 @@ function Beranda() {
   //   console.error('Unexpected response structure:', response.data);
   //   throw new Error('Unexpected response structure');
   // }
+
+  let users = [];
+  const getInsight = async () => {
+    const response = await apiClient.get('/attendance/insight', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 20000,
+    })
+    if (response.data) {
+      users = response.data;
+      console.log(users);
+    } else {
+      console.error('Unexpected response structure:', response.data);
+      throw new Error('Unexpected response structure');
+    }
+  }
+
+  getInsight();
+
   //client
-  const users = [
+  /*const users = [
     {
       id: 1,
       name: "Imanuel Revo Admojo",
@@ -69,7 +89,7 @@ function Beranda() {
       latestAttendance: "15 Agustus 1945",
       mostInattendanceReason: "TK",
     },
-  ];
+  ];*/
   const recentActivities = [
     {
       id: 1,

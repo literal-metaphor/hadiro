@@ -55,7 +55,8 @@ export default async function reqHandler(req: Request, res: Response, action: st
     } catch (e) {
         if (e instanceof HttpError)
             return res.status(e.statusCode).json({ error: e.message });
-    
+
+        // console.log(e);
         return res.status(500).json({ error: "Kesalahan server, mohon coba lagi.",
             stack: e // !PLEASE COMMENT THIS ON PRODUCTION
         });

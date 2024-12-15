@@ -8,7 +8,7 @@ export default async function paginate(body: {
             skip: ((body.page || 1) - 1) * 10,
             take: 10,
             orderBy: {
-                created_at: "asc"
+                created_at: "desc"
             },
             include: {
                 student: {

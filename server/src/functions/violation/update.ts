@@ -7,7 +7,8 @@ export default async function update(body: {
 }) {
     return await violationPrisma.update({
         where: {
-            id: body.id
+            id: body.id,
+            is_deleted: false
         },
         data: {
             student: {

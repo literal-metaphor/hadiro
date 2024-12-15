@@ -5,7 +5,8 @@ export default async function show(body: {
 }) {
     return await attendancePrisma.findUnique({
         where: {
-            id: body.id
+            id: body.id,
+            is_deleted: false
         },
         include: {
             student: {

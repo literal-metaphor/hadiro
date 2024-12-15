@@ -21,7 +21,7 @@ export default async function paginate(body: {
             skip: ((page || 1) - 1) * 10,
             take: 10,
             orderBy: {
-                name: "asc"
+                name: "desc"
             }
         }).then(val => val.map(({ descriptor, ...rest }) => rest)),
         studentPrisma.count({

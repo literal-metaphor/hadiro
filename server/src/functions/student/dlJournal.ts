@@ -9,6 +9,7 @@ import pdfmake from "pdfmake";
 import { createWriteStream, readFileSync, unlinkSync } from "fs";
 import { randomUUID } from "crypto";
 import { TDocumentDefinitions, TFontDictionary } from "pdfmake/interfaces.js";
+import capitalizeStr from "../../utils/misc/capitalizeStr.js";
 
 const StdFonts: TFontDictionary = {
     Courier: {
@@ -86,11 +87,7 @@ export default async function dlJournal(req: Request, res: Response) {
             department
         });
 
-        // const { monday, friday } = getMonFri(); // * Use this one for prod
-        const { monday, friday } = {
-            monday: new Date("2024-11-17"),
-            friday: new Date("2024-11-24")
-        };
+        const { monday, friday } = getMonFri();
         const where = validation.value;
         where.is_deleted = false;
         const data = (await studentPrisma.findMany({
@@ -113,44 +110,100 @@ export default async function dlJournal(req: Request, res: Response) {
                 }
             },
         }));
+        if (data.length < 1) return res.status(404).json({
+            message: "Data not found. Make sure grade, class code, and department is correct."
+        });
 
-        // TODO:
-        // 1. Heading and formalities and stuff
-        // 2. Table for students attendances
-
+        const tableData = data.map((d, i) => {
+            return [
+                i+1,
+                capitalizeStr(d.name),
+                d.attendance.find(val => new Date(val.created_at).getDay() === 1)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 2)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 3)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 4)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 5)?.status[0] || ``,
+            ]
+        });
+        const docTitle = `Jurnal ${grade} ${department} ${class_code} ${monday.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} - ${friday.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
         const dd: TDocumentDefinitions = {
             content: [
                 {
-                    image: `assets/JatimLogo.jpg`,
-                    width: 88,
-                    height: 127,
+                    columns: [
+                        {
+                            image: `assets/LogoGrafika.png`,
+                            width: 107,
+                            height: 133,
+                        },
+                        {
+                            width: "*",
+                            text: [
+                                {
+                                    text: docTitle + "\n",
+                                    bold: true,
+                                    fontSize: 18,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `Jl.Tanimbar No.22 Malang Telp. 0341-353798, Fax 0341-363099\n`,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `Website : www.smkn4malang.sch.id. E-mail : mail@smkn4malang.sch.id\n`,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `MALANG 65117`,
+                                    bold: true,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                            ],
+                            marginTop: 16,
+                            marginLeft: 32
+                        },
+                    ],
+                    // margin: [0,0,0,32], // left, top, right, bottom
+                    marginBottom: 32,
                 },
                 {
                     table: {
                         // headers are automatically repeated if the table spans over multiple pages
                         // you can declare how many rows should be treated as headers
                         headerRows: 1,
-                        widths: [ '*', 'auto', 100, '*' ],
+                        widths: [`auto`, `*`, `auto`, `auto`, `auto`, `auto`, `auto`,],
                 
                         body: [
-                            [ 'First', 'Second', 'Third', 'The last one' ],
-                            [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
-                            [ { text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4' ],
+                            [
+                                { text: 'No.', bold: true },
+                                { text: 'Nama', bold: true },
+
+                                { text: 'Senin', bold: true },
+                                { text: 'Selasa', bold: true },
+                                { text: 'Rabu', bold: true },
+                                { text: 'Kamis', bold: true },
+                                { text: 'Jumat', bold: true },
+                            ],
+                            ...tableData
                         ]
                     }
                 }
             ],
             defaultStyle: {
                 font: 'Times'
+            },
+            info: {
+                title: docTitle
             }
         }
 
         const file = await generatePdf(dd);
-
-        // TODO: Delete pdf-lib
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `inline; filename=${`Jurnal ${grade} ${department} ${class_code} Tanggal ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}.pdf`}`);
-        return res.send(file);
+        // This is just for previewing, the endpoint should just download the file
+        // res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `inline; filename=${`${`Jurnal ${grade} ${department} ${class_code} ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}`}.pdf`}`);
+        return res.status(200).send(file);
     } catch (e) {
         if (e instanceof HttpError)
             return res.status(e.statusCode).json({ error: e.message });

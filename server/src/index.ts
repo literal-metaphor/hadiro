@@ -3,9 +3,14 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
+import cron from "node-cron";
+
 import reqHandler from "./utils/reqHandler.js";
 import { RouteDictionary } from "./utils/types/RouteDictionary.js";
 import dlJournal from "./functions/student/dlJournal.js";
+import { attendancePrisma, studentPrisma } from "../prisma/clients.js";
+import { randomUUID } from "crypto";
+import { AttendanceStatusEnum } from "./utils/enums/AttendanceStatus.js";
 
 // Configure app to work with .env
 dotenv.config();
@@ -190,4 +195,41 @@ app.get(`/api/v1/student/dlJournal`, dlJournal as any); // This works, but I hav
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+});
+
+// Cron job explanation in case dumb me forgot:
+// "0 8 * * *" means every day every 8 AM
+// It should get all students who haven't submitted attendance today and mark them as TK
+cron.schedule(`0 8 * * *`, async () => {
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const endOfDay = new Date();
+  endOfDay.setHours(23, 59, 59, 999);
+
+  const unattending = await studentPrisma.findMany({
+    where: {
+      attendance: {
+        none: {
+          created_at: {
+            gte: startOfDay,
+            lt: endOfDay,
+          }
+        }
+      }
+    }
+  });
+
+  for (const u of unattending) {
+    await attendancePrisma.create({
+      data: {
+        id: randomUUID(),
+        status: AttendanceStatusEnum.TK,
+        student: {
+          connect: {
+            id: u.id
+          }
+        }
+      }
+    });
+  }
 });

@@ -20,9 +20,11 @@ export default async function insight(body: {
                     },
                     is_deleted: false
                 },
+                take: 10,
                 include: {
                     student: {
                         select: {
+                            id: true,
                             name: true
                         }
                     }
@@ -41,9 +43,11 @@ export default async function insight(body: {
                     },
                     is_deleted: false
                 },
+                take: 10,
                 include: {
                     student: {
                         select: {
+                            id: true,
                             name: true
                         }
                     }
@@ -54,6 +58,7 @@ export default async function insight(body: {
 
     // Process each records
     let records = [] as {
+        id: string,
         name: string,
         attendances: Array<{
             time: Date
@@ -71,6 +76,7 @@ export default async function insight(body: {
                     records[found].attendances.push({ time: val.created_at });
                 } else {
                     records.push({
+                        id: val.student.id,
                         name: val.student.name,
                         attendances: [{
                             time: val.created_at
@@ -87,6 +93,7 @@ export default async function insight(body: {
                     records[found].inattendances.push({ reason: val.status });
                 } else {
                     records.push({
+                        id: val.student.id,
                         name: val.student.name,
                         attendances: [],
                         inattendances: [{
@@ -100,6 +107,8 @@ export default async function insight(body: {
 
     return records.map(val => {
         return {
+            id: val.id,
+
             name: val.name,
 
             latestAttendance: val.attendances.length > 0

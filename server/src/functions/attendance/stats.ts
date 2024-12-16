@@ -16,11 +16,6 @@ export default async function stats(body: {
             },
             is_deleted: false
         }
-    // })).map(val => {
-    //     return {
-    //         date: val.created_at,
-    //     }  
-    // });
     })).map(val => val.created_at);
 
     const inattendances = (await attendancePrisma.findMany({

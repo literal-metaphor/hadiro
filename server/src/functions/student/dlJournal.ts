@@ -1,11 +1,68 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { studentPrisma } from "../../../prisma/clients.js";
 import { Request, Response } from "express";
-import Joi from "joi";
 import { StudentGradeEnum } from "../../utils/enums/StudentGrade.js";
 import { StudentDepartmentEnum } from "../../utils/enums/StudentDepartment.js";
 import HttpError from "../../utils/errors/HttpError.js";
+import Joi from "joi";
 import getMonFri from "../../utils/misc/getMondayFridayThisWeek.js";
+import pdfmake from "pdfmake";
+import { createWriteStream, readFileSync, unlinkSync } from "fs";
+import { randomUUID } from "crypto";
+import { TDocumentDefinitions, TFontDictionary } from "pdfmake/interfaces.js";
+
+const StdFonts: TFontDictionary = {
+    Courier: {
+        normal: 'Courier',
+        bold: 'Courier-Bold',
+        italics: 'Courier-Oblique',
+        bolditalics: 'Courier-BoldOblique'
+    },
+    Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique'
+    },
+    Times: {
+        normal: 'Times-Roman',
+        bold: 'Times-Bold',
+        italics: 'Times-Italic',
+        bolditalics: 'Times-BoldItalic'
+    },
+    Symbol: {
+        normal: 'Symbol'
+    },
+    ZapfDingbats: {
+        normal: 'ZapfDingbats'
+    }
+};
+
+async function generatePdf(dd: TDocumentDefinitions): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        const printer = new pdfmake(StdFonts);
+        const pdfDoc = printer.createPdfKitDocument(dd);
+        const filename = `${randomUUID()}.pdf`;
+        const writeStream = createWriteStream(filename);
+
+        pdfDoc.pipe(writeStream);
+
+        writeStream.on('finish', () => {
+            try {
+                const file = readFileSync(filename);
+                unlinkSync(filename);
+                resolve(file);
+            } catch (err) {
+                reject(err);
+            }
+        });
+
+        writeStream.on('error', (err) => {
+            reject(err);
+        });
+
+        pdfDoc.end();
+    });
+}
 
 // * SPECIAL ENDPOINT
 export default async function dlJournal(req: Request, res: Response) {
@@ -31,8 +88,8 @@ export default async function dlJournal(req: Request, res: Response) {
 
         // const { monday, friday } = getMonFri(); // * Use this one for prod
         const { monday, friday } = {
-            monday: new Date("2024-11-10"),
-            friday: new Date("2024-11-17")
+            monday: new Date("2024-11-17"),
+            friday: new Date("2024-11-24")
         };
         const where = validation.value;
         where.is_deleted = false;
@@ -57,80 +114,47 @@ export default async function dlJournal(req: Request, res: Response) {
             },
         }));
 
-        // I love it when pdf-lib says "It's pdf-ing time" and pdf-ed all over the place
-        const pdf = await PDFDocument.create();
-        const font = await pdf.embedFont(StandardFonts.Helvetica);
-        
-        let page = pdf.addPage()
-        const { width, height } = page.getSize()
-        
-        let i = 0;
-        const table = data.map((d) => {
-            const newPage = i % 10 === 0 && i > 0;
-            if (newPage) i = 0;
-            i++;
+        // TODO:
+        // 1. Heading and formalities and stuff
+        // 2. Table for students attendances
 
-            const attendances = new Array(5).fill("");
-            const days = [1,2,3,4,5];
-            days.forEach(day => {
-                for (const att of d.attendance) {
-                  if (day === att.created_at.getDay()) {
-                    attendances[day] = att.status;
-                  }
+        const dd: TDocumentDefinitions = {
+            content: [
+                {
+                    image: `assets/JatimLogo.jpg`,
+                    width: 88,
+                    height: 127,
+                },
+                {
+                    table: {
+                        // headers are automatically repeated if the table spans over multiple pages
+                        // you can declare how many rows should be treated as headers
+                        headerRows: 1,
+                        widths: [ '*', 'auto', 100, '*' ],
+                
+                        body: [
+                            [ 'First', 'Second', 'Third', 'The last one' ],
+                            [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
+                            [ { text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4' ],
+                        ]
+                    }
                 }
-            });
-
-            // for (const att of d.attendance) {
-            //   if (today === att.created_at.getDay()) {
-            //     attendances[today] = "HADIR";
-            //   }
-            // }
-            
-            // for (const inatt of d.inattendance) {
-            //   if (today === inatt.created_at.getDay()) {
-            //     attendances[today] = inatt.reason;
-            //   }
-            // }
-            return {
-                x: 80,
-                y: height - ((i + 4) * 30),
-                size: 9,
-                text: d.name + attendances.join(","),
-                newPage,
+            ],
+            defaultStyle: {
+                font: 'Times'
             }
-        });
-
-        // Draw heading
-        page.drawText(`JURNAL KEHADIRAN SISWA ${grade} ${department} ${class_code}`, {
-            // x: (width / 2) - (font.widthOfTextAtSize(`JURNAL KEHADIRAN SISWA ${grade} ${department} ${class_code}`, 13)),
-            x: 80,
-            y: height - 80,
-            size: 13,
-        });
-
-        // Draw table data
-        for (const t of table) {
-            if (t.newPage) page = pdf.addPage();
-            page.drawText(t.text, {
-                x: t.x,
-                y: t.y,
-                size: t.size,
-                font,
-                color: rgb(0,0,0),
-            })
         }
-        
-        pdf.setTitle(`Jurnal ${grade} ${department} ${class_code}`)
-        const file = await pdf.save();
 
-        // res.setHeader('Content-Disposition', `attachment; filename=${`Jurnal ${grade} ${department} ${class_code} Tanggal ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}.pdf`}`);
+        const file = await generatePdf(dd);
+
+        // TODO: Delete pdf-lib
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `inline; filename=${`Jurnal ${grade} ${department} ${class_code} Tanggal ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}.pdf`}`);
-        return res.send(Buffer.from(file));
+        return res.send(file);
     } catch (e) {
         if (e instanceof HttpError)
             return res.status(e.statusCode).json({ error: e.message });
 
-        return res.status(500).json({ error: "Kesalahan server, mohon coba lagi." });
+        return res.status(500).json({ error: "Internal server error, please try again." });
     }
 }

@@ -121,7 +121,7 @@ function Beranda() {
       if (response.data) {
         const { attendances, inattendances } = response.data;
 
-        console.log(startDate, endDate);
+        //console.log(startDate, endDate);
 
         // Process line chart data
         const lineData = attendances.reduce((acc: AttendanceCounts, date: string) => {

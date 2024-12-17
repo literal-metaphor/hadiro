@@ -57,7 +57,7 @@ export default async function reqHandler(req: Request, res: Response, action: st
             return res.status(e.statusCode).json({ error: e.message });
 
         // console.log(e);
-        return res.status(500).json({ error: "Kesalahan server, mohon coba lagi.",
+        return res.status(500).json({ error: "Internal server error, please try again.",
             stack: e // !PLEASE COMMENT THIS ON PRODUCTION
         });
     }

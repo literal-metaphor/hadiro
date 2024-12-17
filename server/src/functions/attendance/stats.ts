@@ -7,6 +7,8 @@ export default async function stats(body: {
 }) {
     const { from, until } = body;
 
+    until.setDate(until.getDate() + 1);
+
     const attendances = (await attendancePrisma.findMany({
         where: {
             status: AttendanceStatusEnum.HADIR,

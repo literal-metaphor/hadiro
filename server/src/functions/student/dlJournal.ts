@@ -1,11 +1,69 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { studentPrisma } from "../../../prisma/clients.js";
 import { Request, Response } from "express";
-import Joi from "joi";
 import { StudentGradeEnum } from "../../utils/enums/StudentGrade.js";
 import { StudentDepartmentEnum } from "../../utils/enums/StudentDepartment.js";
 import HttpError from "../../utils/errors/HttpError.js";
+import Joi from "joi";
 import getMonFri from "../../utils/misc/getMondayFridayThisWeek.js";
+import pdfmake from "pdfmake";
+import { createWriteStream, readFileSync, unlinkSync } from "fs";
+import { randomUUID } from "crypto";
+import { TDocumentDefinitions, TFontDictionary } from "pdfmake/interfaces.js";
+import capitalizeStr from "../../utils/misc/capitalizeStr.js";
+
+const StdFonts: TFontDictionary = {
+    Courier: {
+        normal: 'Courier',
+        bold: 'Courier-Bold',
+        italics: 'Courier-Oblique',
+        bolditalics: 'Courier-BoldOblique'
+    },
+    Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique'
+    },
+    Times: {
+        normal: 'Times-Roman',
+        bold: 'Times-Bold',
+        italics: 'Times-Italic',
+        bolditalics: 'Times-BoldItalic'
+    },
+    Symbol: {
+        normal: 'Symbol'
+    },
+    ZapfDingbats: {
+        normal: 'ZapfDingbats'
+    }
+};
+
+async function generatePdf(dd: TDocumentDefinitions): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        const printer = new pdfmake(StdFonts);
+        const pdfDoc = printer.createPdfKitDocument(dd);
+        const filename = `${randomUUID()}.pdf`;
+        const writeStream = createWriteStream(filename);
+
+        pdfDoc.pipe(writeStream);
+
+        writeStream.on('finish', () => {
+            try {
+                const file = readFileSync(filename);
+                unlinkSync(filename);
+                resolve(file);
+            } catch (err) {
+                reject(err);
+            }
+        });
+
+        writeStream.on('error', (err) => {
+            reject(err);
+        });
+
+        pdfDoc.end();
+    });
+}
 
 // * SPECIAL ENDPOINT
 export default async function dlJournal(req: Request, res: Response) {
@@ -29,11 +87,7 @@ export default async function dlJournal(req: Request, res: Response) {
             department
         });
 
-        // const { monday, friday } = getMonFri(); // * Use this one for prod
-        const { monday, friday } = {
-            monday: new Date("2024-11-10"),
-            friday: new Date("2024-11-17")
-        };
+        const { monday, friday } = getMonFri();
         const where = validation.value;
         where.is_deleted = false;
         const data = (await studentPrisma.findMany({
@@ -56,81 +110,104 @@ export default async function dlJournal(req: Request, res: Response) {
                 }
             },
         }));
+        if (data.length < 1) return res.status(404).json({
+            message: "Data not found. Make sure grade, class code, and department is correct."
+        });
 
-        // I love it when pdf-lib says "It's pdf-ing time" and pdf-ed all over the place
-        const pdf = await PDFDocument.create();
-        const font = await pdf.embedFont(StandardFonts.Helvetica);
-        
-        let page = pdf.addPage()
-        const { width, height } = page.getSize()
-        
-        let i = 0;
-        const table = data.map((d) => {
-            const newPage = i % 10 === 0 && i > 0;
-            if (newPage) i = 0;
-            i++;
+        const tableData = data.map((d, i) => {
+            return [
+                i+1,
+                capitalizeStr(d.name),
+                d.attendance.find(val => new Date(val.created_at).getDay() === 1)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 2)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 3)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 4)?.status[0] || ``,
+                d.attendance.find(val => new Date(val.created_at).getDay() === 5)?.status[0] || ``,
+            ]
+        });
+        const docTitle = `Jurnal ${grade} ${department} ${class_code} ${monday.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} - ${friday.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+        const dd: TDocumentDefinitions = {
+            content: [
+                {
+                    columns: [
+                        {
+                            image: `assets/LogoGrafika.png`,
+                            width: 107,
+                            height: 133,
+                        },
+                        {
+                            width: "*",
+                            text: [
+                                {
+                                    text: docTitle + "\n",
+                                    bold: true,
+                                    fontSize: 18,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `Jl.Tanimbar No.22 Malang Telp. 0341-353798, Fax 0341-363099\n`,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `Website : www.smkn4malang.sch.id. E-mail : mail@smkn4malang.sch.id\n`,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                                {
+                                    text: `MALANG 65117`,
+                                    bold: true,
+                                    fontSize: 12,
+                                    lineHeight: 1.5
+                                },
+                            ],
+                            marginTop: 16,
+                            marginLeft: 32
+                        },
+                    ],
+                    // margin: [0,0,0,32], // left, top, right, bottom
+                    marginBottom: 32,
+                },
+                {
+                    table: {
+                        // headers are automatically repeated if the table spans over multiple pages
+                        // you can declare how many rows should be treated as headers
+                        headerRows: 1,
+                        widths: [`auto`, `*`, `auto`, `auto`, `auto`, `auto`, `auto`,],
+                
+                        body: [
+                            [
+                                { text: 'No.', bold: true },
+                                { text: 'Nama', bold: true },
 
-            const attendances = new Array(5).fill("");
-            const days = [1,2,3,4,5];
-            days.forEach(day => {
-                for (const att of d.attendance) {
-                  if (day === att.created_at.getDay()) {
-                    attendances[day] = att.status;
-                  }
+                                { text: 'Senin', bold: true },
+                                { text: 'Selasa', bold: true },
+                                { text: 'Rabu', bold: true },
+                                { text: 'Kamis', bold: true },
+                                { text: 'Jumat', bold: true },
+                            ],
+                            ...tableData
+                        ]
+                    }
                 }
-            });
-
-            // for (const att of d.attendance) {
-            //   if (today === att.created_at.getDay()) {
-            //     attendances[today] = "HADIR";
-            //   }
-            // }
-            
-            // for (const inatt of d.inattendance) {
-            //   if (today === inatt.created_at.getDay()) {
-            //     attendances[today] = inatt.reason;
-            //   }
-            // }
-            return {
-                x: 80,
-                y: height - ((i + 4) * 30),
-                size: 9,
-                text: d.name + attendances.join(","),
-                newPage,
+            ],
+            defaultStyle: {
+                font: 'Times'
+            },
+            info: {
+                title: docTitle
             }
-        });
-
-        // Draw heading
-        page.drawText(`JURNAL KEHADIRAN SISWA ${grade} ${department} ${class_code}`, {
-            // x: (width / 2) - (font.widthOfTextAtSize(`JURNAL KEHADIRAN SISWA ${grade} ${department} ${class_code}`, 13)),
-            x: 80,
-            y: height - 80,
-            size: 13,
-        });
-
-        // Draw table data
-        for (const t of table) {
-            if (t.newPage) page = pdf.addPage();
-            page.drawText(t.text, {
-                x: t.x,
-                y: t.y,
-                size: t.size,
-                font,
-                color: rgb(0,0,0),
-            })
         }
-        
-        pdf.setTitle(`Jurnal ${grade} ${department} ${class_code}`)
-        const file = await pdf.save();
 
-        // res.setHeader('Content-Disposition', `attachment; filename=${`Jurnal ${grade} ${department} ${class_code} Tanggal ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}.pdf`}`);
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `inline; filename=${`Jurnal ${grade} ${department} ${class_code} Tanggal ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}.pdf`}`);
-        return res.send(Buffer.from(file));
+        const file = await generatePdf(dd);
+        // This is just for previewing, the endpoint should just download the file
+        // res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `inline; filename=${`${`Jurnal ${grade} ${department} ${class_code} ${monday.toLocaleDateString("id-ID")} - ${friday.toLocaleDateString("id-ID")}`}.pdf`}`);
+        return res.status(200).send(file);
     } catch (e) {
         if (e instanceof HttpError)
             return res.status(e.statusCode).json({ error: e.message });
 
-        return res.status(500).json({ error: "Kesalahan server, mohon coba lagi." });
+        return res.status(500).json({ error: "Internal server error, please try again." });
     }
 }

@@ -1,6 +1,12 @@
 import { studentPrisma } from "../../../prisma/clients.js";
 
-const labeledDescriptors = (await studentPrisma.findMany()).map((val: { name: any; descriptor: string; }) => {
+const labeledDescriptors = (await studentPrisma.findMany()).map((val: { 
+    name: string; 
+    grade: string;
+    department: string;
+    class_code: string;
+    descriptor: string; 
+}) => {
     return {
         label: val.name,
         grade: val.grade,

@@ -1,6 +1,12 @@
 import { studentPrisma } from "../../../prisma/clients.js";
 
-const labeledDescriptors = (await studentPrisma.findMany()).map(val => {
+const labeledDescriptors = (await studentPrisma.findMany()).map((val: { 
+    name: string; 
+    grade: string;
+    department: string;
+    class_code: string;
+    descriptor: string; 
+}) => {
     return {
         label: val.name,
         grade: val.grade,
@@ -25,7 +31,7 @@ function euclideanDistance(descriptor1: Float32Array, descriptor2: Float32Array)
 
     return Math.sqrt(sum);
 
-}
+};
 
 export default async function findClosestMatches(data: {
     descriptor: Float32Array,
@@ -60,11 +66,11 @@ export default async function findClosestMatches(data: {
     });
 
     // Sort matches by distance (ascending)
-    matches.sort((a, b) => a.distance - b.distance);
+    matches.sort((a: { distance: number; }, b: { distance: number; }) => a.distance - b.distance);
 
     // Return the top N closest match(es)
     return {
         closestMatches: matches.slice(0, topN)
     }
 
-}
+};

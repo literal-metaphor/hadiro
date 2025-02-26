@@ -75,7 +75,7 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
 # Creator Of Project 
 
 <h2> Imanuel Revo Admojo </h2>
-<h5> UI Designer , UX & Frontend Analyst , Tester </h5> 
+<h5> UI UX Designer , Frontend dev , Tester </h5> 
 
 <button>
   <a href="https://grafikarsa.com/members/rev0c4lor5/">
@@ -93,7 +93,7 @@ Untuk member Grafika yang ingin info lebih lanjut dapat menghubungi akun dibawah
 </button> <br><br>
 
 <h2> Emmanuel Jason </h2>
-<h5> Frontend Developer , Full Stack Analyst, Tester </h5>
+<h5> Full Stack dev , Tester </h5>
 
 
 <button>

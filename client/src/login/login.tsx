@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import assets from '../assets/assets.ts';
-import apiClient from '../api/axios';
+import '../api/axios';
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);

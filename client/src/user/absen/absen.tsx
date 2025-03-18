@@ -38,7 +38,10 @@ function Absen() {
   const takePhotoButton = takePhotoButtonRef.current;
   const studentSelect = studentSelectRef.current;
 
-  let handleTakePhotoClick;
+  let handleTakePhotoClick = () => {
+    console.log("Taken the your photos!");
+  };
+  
   if (takePhotoButton && studentSelect) {
     handleTakePhotoClick = () => {
       if (canTakePhotoRef.current && currentDescriptorRef.current) {
